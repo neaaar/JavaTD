@@ -1,0 +1,38 @@
+package com.mfarioli.JavaTD;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class GameRender {
+    private Game game;
+
+    public GameRender(Game game) {
+        this.game = game;
+    }
+
+    public void render(Graphics g) {
+        switch(GameStates.gameStates) {
+            case MENU -> {
+                game.getMenu().render(g);
+                break;
+            }
+
+            case PLAYING -> {
+
+
+                break;
+            }
+
+            case SETTINGS -> {
+
+
+                break;
+            }
+        }
+    }
+}

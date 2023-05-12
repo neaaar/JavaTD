@@ -23,13 +23,13 @@ public class GameRender {
             }
 
             case PLAYING -> {
-
+                game.getPlaying().render(g);
 
                 break;
             }
 
             case SETTINGS -> {
-
+                game.getSettings().render(g);
 
                 break;
             }

@@ -18,10 +18,6 @@ public class Game extends JFrame implements Runnable {
 
     private Thread gameThread;
 
-    private CustomMouseListener mouseListener;
-
-    private CustomKeyListener keyListener;
-
     private GameRender gameRender;
 
     private Menu menu;
@@ -68,13 +64,6 @@ public class Game extends JFrame implements Runnable {
 
         gameThread = new Thread(this);
 
-        mouseListener = new CustomMouseListener();
-        keyListener = new CustomKeyListener();
-        addMouseListener(mouseListener);
-        addMouseMotionListener(mouseListener);
-        addKeyListener(keyListener);
-        requestFocus();
-
         this.gameRender = new GameRender(this);
         this.menu = new Menu(this);
         this.playing = new Playing(this);
@@ -90,9 +79,12 @@ public class Game extends JFrame implements Runnable {
     private void initialize() {
         setLocation(400, 150);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
 
         pack(); //lets the windowManager create the panel given the values in JPanel
         setVisible(true);
+
+        gameScreen.initImputs();
     }
 
     private void start() {

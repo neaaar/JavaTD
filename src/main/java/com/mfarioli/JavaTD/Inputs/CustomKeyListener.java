@@ -1,5 +1,8 @@
 package com.mfarioli.JavaTD.Inputs;
 
+import com.mfarioli.JavaTD.Game;
+import com.mfarioli.JavaTD.GameStates;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -12,7 +15,8 @@ public class CustomKeyListener implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_A) {
-            System.out.println("A has been pressed");
+            System.out.println("change to playing scene");
+            GameStates.gameStates = GameStates.PLAYING;
         }
     }
 

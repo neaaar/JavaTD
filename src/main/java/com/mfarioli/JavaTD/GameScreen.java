@@ -1,5 +1,8 @@
 package com.mfarioli.JavaTD;
 
+import com.mfarioli.JavaTD.Inputs.CustomKeyListener;
+import com.mfarioli.JavaTD.Inputs.CustomMouseListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,9 +15,14 @@ public class GameScreen extends JPanel {
 
     private Dimension size;
 
+    private CustomMouseListener mouseListener;
+
+    private CustomKeyListener keyListener;
+
     public GameScreen(Game game) {
         this.game = game;
         setPanelSize();
+        initImputs();
     }
 
     //sets the dimension for the Game panel
@@ -24,6 +32,16 @@ public class GameScreen extends JPanel {
         setMinimumSize(size);
         setMaximumSize(size);
         setPreferredSize(size);
+    }
+
+    public void initImputs() {
+        mouseListener = new CustomMouseListener(game);
+        keyListener = new CustomKeyListener();
+
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseListener);
+        addKeyListener(keyListener);
+        requestFocus();
     }
 
     public void paintComponent(Graphics g) {

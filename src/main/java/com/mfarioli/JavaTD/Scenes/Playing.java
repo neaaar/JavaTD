@@ -1,7 +1,9 @@
 package com.mfarioli.JavaTD.Scenes;
 
 import com.mfarioli.JavaTD.Game;
+import com.mfarioli.JavaTD.GameStates;
 import com.mfarioli.JavaTD.Handlers.TileHandler;
+import com.mfarioli.JavaTD.UI.CustomButton;
 
 import java.awt.*;
 
@@ -12,10 +14,13 @@ public class Playing extends SuperScene implements SceneInterface{
 
     private TileHandler tileHandler;
 
+    private CustomButton bMenu;
+
     public Playing(Game game) {
         super(game);
         level = getLevelData();
         tileHandler = new TileHandler();
+        bMenu = new CustomButton("Menu", 5, 5, 60, 20);
     }
 
     /*
@@ -31,6 +36,22 @@ public class Playing extends SuperScene implements SceneInterface{
                 int id = level[y][x];
                 g.drawImage(tileHandler.getSprite(id), x*32, y*32, null);
             }
+        }
+        bMenu.draw(g);
+    }
+
+    @Override
+    public void mouseClicked(int x, int y) {
+        if(bMenu.getBounds().contains(x, y)) {
+            GameStates.setGameState(GameStates.MENU);
+        }
+    }
+
+    @Override
+    public void mouseMoved(int x, int y) {
+        bMenu.setMouseOver(false);
+        if(bMenu.getBounds().contains(x, y)) {
+            bMenu.setMouseOver(true);
         }
     }
 }

@@ -35,7 +35,6 @@ public class TileHandler {
     }
 
     private void loadAtlas() {
-
         atlas = LoadSave.getSpriteAtlas();
     }
 

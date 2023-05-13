@@ -16,7 +16,7 @@ public class CustomKeyListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_A) {
             System.out.println("change to playing scene");
-            GameStates.gameStates = GameStates.PLAYING;
+            GameStates.gameState = GameStates.PLAYING;
         }
     }
 

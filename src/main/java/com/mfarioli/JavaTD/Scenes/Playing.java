@@ -2,6 +2,7 @@ package com.mfarioli.JavaTD.Scenes;
 
 import com.mfarioli.JavaTD.Game;
 import com.mfarioli.JavaTD.GameStates;
+import com.mfarioli.JavaTD.Handlers.EnemyHandler;
 import com.mfarioli.JavaTD.Handlers.TileHandler;
 import com.mfarioli.JavaTD.Helpers.LevelBuilder;
 import com.mfarioli.JavaTD.Helpers.LoadSave;
@@ -16,6 +17,8 @@ public class Playing extends SuperScene implements SceneInterface{
 
     private TileHandler tileHandler;
 
+    private EnemyHandler enemyHandler;
+
     private CustomButton bMenu;
 
     private int animationIndex;
@@ -25,6 +28,7 @@ public class Playing extends SuperScene implements SceneInterface{
     public Playing(Game game) {
         super(game);
         tileHandler = new TileHandler();
+        enemyHandler = new EnemyHandler(this);
         bMenu = new CustomButton("Menu", 5, 5, 60, 20);
 
         String levelName = createDefaultLevel();
@@ -52,10 +56,13 @@ public class Playing extends SuperScene implements SceneInterface{
             }
         }
         bMenu.draw(g);
+
+        enemyHandler.draw(g);
     }
 
     private void updateTick() {
         tick++;
+        //change tick >= x to change the animation speed, the lower the x the faster the animation
         if (tick >= 24) {
             tick = 0;
             animationIndex++;
@@ -63,6 +70,20 @@ public class Playing extends SuperScene implements SceneInterface{
                 animationIndex = 0;
             }
         }
+    }
+
+    public void update() {
+        enemyHandler.update();
+    }
+
+    public int getTileType(int x, int y) {
+        int xCord = x / 32;
+        int yCord = y / 32;
+        if(xCord < 0 || xCord > 19 || yCord < 0 || yCord > 19) {
+            return 0; //if out of bounds return water tile
+        }
+        int id = level[yCord][xCord];
+        return getGame().getTileHandler().getTile(id).getTileType();
     }
 
     private boolean isAnimation(int spriteID) {
@@ -73,6 +94,8 @@ public class Playing extends SuperScene implements SceneInterface{
     public void mouseClicked(int x, int y) {
         if(bMenu.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.MENU);
+        } else {
+            //enemyHandler.addEnemy(x, y);
         }
     }
 

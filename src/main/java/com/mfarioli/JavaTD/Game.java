@@ -103,6 +103,24 @@ public class Game extends JFrame implements Runnable {
         gameThread.start();
     }
 
+
+    private void updateGame() {
+        switch (GameStates.gameState) {
+            case PLAYING -> {
+                playing.update();
+                break;
+            }
+
+            case SETTINGS -> {
+                break;
+            }
+
+            case MENU -> {
+                break;
+            }
+        }
+    }
+
     @Override
     public void run() {
         //FPS stuff
@@ -135,7 +153,7 @@ public class Game extends JFrame implements Runnable {
             //enough time has passed, update the game
             if(now - lastUpdate > timePerUpdate) {
                 lastUpdate = now;
-                //updateGame metodo per fare update
+                updateGame();
                 updates++;
             }
 

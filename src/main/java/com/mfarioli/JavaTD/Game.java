@@ -1,5 +1,6 @@
 package com.mfarioli.JavaTD;
 
+import com.mfarioli.JavaTD.Handlers.TileHandler;
 import com.mfarioli.JavaTD.Inputs.CustomKeyListener;
 import com.mfarioli.JavaTD.Inputs.CustomMouseListener;
 import com.mfarioli.JavaTD.Scenes.Menu;
@@ -25,6 +26,8 @@ public class Game extends JFrame implements Runnable {
     private Playing playing;
 
     private Settings settings;
+
+    private TileHandler tileHandler;
 
     public GameRender getGameRender() {
         return gameRender;
@@ -58,6 +61,14 @@ public class Game extends JFrame implements Runnable {
         this.settings = settings;
     }
 
+    public TileHandler getTileHandler() {
+        return tileHandler;
+    }
+
+    public void setTileHandler(TileHandler tileHandler) {
+        this.tileHandler = tileHandler;
+    }
+
     public Game() {
         gameScreen = new GameScreen(this);
         add(gameScreen);
@@ -68,6 +79,7 @@ public class Game extends JFrame implements Runnable {
         this.menu = new Menu(this);
         this.playing = new Playing(this);
         this.settings = new Settings(this);
+        this.tileHandler = new TileHandler();
     }
 
     public static void main(String[] args) {

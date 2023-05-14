@@ -3,7 +3,8 @@ package com.mfarioli.JavaTD.Helpers;
 public class LevelBuilder {
 
     //creates a 2 dimensional int array where every value is a tile on the level
-    public static int[][] getLevelData() {
+    //new method is in LoadSave
+    public static int[][] obsoleteGetLevelData() {
         int[][] level = {
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},

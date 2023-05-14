@@ -39,9 +39,9 @@ public class CustomButton {
 
     private void drawBody(Graphics g) {
         if(mouseOver) {
-            g.setColor(Color.GRAY);
+            g.setColor(new Color(20, 60, 200, 196));
         } else {
-            g.setColor(Color.WHITE);
+            g.setColor(new Color(20, 60, 200, 128));
         }
 
         g.fillRect(x, y, width, heigth);

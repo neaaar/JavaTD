@@ -47,7 +47,7 @@ public class Menu extends SuperScene implements SceneInterface{
 
     //loads every sprite in spriteatlas.png and adds it to a list
     private void loadSprites() {
-        for(int y = 0; y < 10; y++) {
+        for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 10; x++) {
                 sprites.add(atlas.getSubimage(x*32, y*32, 32, 32));
             }

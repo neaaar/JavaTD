@@ -27,7 +27,7 @@ public class GameScreen extends JPanel {
 
     //sets the dimension for the Game panel
     private void setPanelSize() {
-        size = new Dimension(640, 640);
+        size = new Dimension(640, 720);
 
         setMinimumSize(size);
         setMaximumSize(size);

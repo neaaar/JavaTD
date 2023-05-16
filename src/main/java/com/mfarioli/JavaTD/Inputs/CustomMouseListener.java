@@ -49,7 +49,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
             }
 
             case PLAYING -> {
-
+                game.getPlaying().mousePressed(e.getX(), e.getY());
                 break;
             }
         }
@@ -69,7 +69,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
             }
 
             case PLAYING -> {
-
+                game.getPlaying().mouseReleased(e.getX(), e.getY());
                 break;
             }
         }

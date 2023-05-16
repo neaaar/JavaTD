@@ -1,15 +1,22 @@
 package com.mfarioli.JavaTD.Scenes;
 
+import com.mfarioli.JavaTD.Entities.Allies.Tower;
 import com.mfarioli.JavaTD.Game;
 import com.mfarioli.JavaTD.GameStates;
 import com.mfarioli.JavaTD.Handlers.EnemyHandler;
 import com.mfarioli.JavaTD.Handlers.TileHandler;
+import com.mfarioli.JavaTD.Handlers.TowerHandler;
 import com.mfarioli.JavaTD.Helpers.LevelBuilder;
 import com.mfarioli.JavaTD.Helpers.LoadSave;
+import com.mfarioli.JavaTD.Objects.PathPoint;
+import com.mfarioli.JavaTD.UI.ActionBar;
+import com.mfarioli.JavaTD.UI.BottomBar;
 import com.mfarioli.JavaTD.UI.CustomButton;
 
 import java.awt.*;
+import java.util.ArrayList;
 
+import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.GRASS_TILE;
 import static com.mfarioli.JavaTD.Helpers.LevelBuilder.obsoleteGetLevelData;
 
 public class Playing extends SuperScene implements SceneInterface{
@@ -19,20 +26,38 @@ public class Playing extends SuperScene implements SceneInterface{
 
     private EnemyHandler enemyHandler;
 
+    private TowerHandler towerHandler;
+
+    private Tower selectedTower;
+
     private CustomButton bMenu;
+
+    private ActionBar actionBar;
 
     private int animationIndex;
 
     private int tick;
 
+    private int mouseX, mouseY;
+
+    private PathPoint start,end;
+
+    public TowerHandler getTowerHandler() {
+        return this.towerHandler;
+    }
+
     public Playing(Game game) {
         super(game);
-        tileHandler = new TileHandler();
-        enemyHandler = new EnemyHandler(this);
         bMenu = new CustomButton("Menu", 5, 5, 60, 20);
+        actionBar = new ActionBar(0, 640, 640, 80, this);
 
-        String levelName = createDefaultLevel();
-        level = LoadSave.getLevelData(1);
+        //call this method once only for creating the .txt file, then just use getLevelData
+        //this.createLevel();
+        level = this.loadLevel(1);
+
+        tileHandler = new TileHandler();
+        enemyHandler = new EnemyHandler(this, start, end);
+        towerHandler = new TowerHandler(this);
     }
 
     /*
@@ -56,8 +81,12 @@ public class Playing extends SuperScene implements SceneInterface{
             }
         }
         bMenu.draw(g);
+        actionBar.draw(g);
 
         enemyHandler.draw(g);
+        towerHandler.draw(g);
+
+        drawSelectedTower(g);
     }
 
     private void updateTick() {
@@ -74,6 +103,16 @@ public class Playing extends SuperScene implements SceneInterface{
 
     public void update() {
         enemyHandler.update();
+        towerHandler.update();
+    }
+
+    public void setSelectedTower(Tower selectedTower) {
+        this.selectedTower = selectedTower;
+    }
+
+    private void drawSelectedTower(Graphics g) {
+        if(selectedTower == null) return;
+        g.drawImage(towerHandler.getTowerImages()[selectedTower.getTowerType()], mouseX, mouseY, null);
     }
 
     public int getTileType(int x, int y) {
@@ -92,25 +131,63 @@ public class Playing extends SuperScene implements SceneInterface{
 
     @Override
     public void mouseClicked(int x, int y) {
+        if(y >= 640) {
+            actionBar.mouseClicked(x, y);
+        } else {
+            if(selectedTower == null) return;
+            if(!isTileGrass(mouseX, mouseY)) return;
+
+            towerHandler.addTower(selectedTower, mouseX, mouseY);
+            selectedTower = null;
+        }
+
         if(bMenu.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.MENU);
-        } else {
-            //enemyHandler.addEnemy(x, y);
         }
+    }
+
+    private boolean isTileGrass(int x, int y) {
+        int id = level[y / 32][x / 32];
+        int tileType = getGame().getTileHandler().getTile(id).getTileType();
+        return tileType == GRASS_TILE;
     }
 
     @Override
     public void mouseMoved(int x, int y) {
+        if(y >= 640) {
+            actionBar.mouseMoved(x, y);
+        } else {
+            mouseX = (x / 32) * 32;
+            mouseY = (y / 32) * 32;
+        }
+
         bMenu.setMouseOver(false);
         if(bMenu.getBounds().contains(x, y)) {
             bMenu.setMouseOver(true);
         }
     }
 
-    private String createDefaultLevel() {
-        int[][] idArray = LevelBuilder.obsoleteGetLevelData();
+    public void mousePressed(int x, int y) {
+        if (y >= 640) {
+            actionBar.mousePressed(x, y);
+        }
+    }
 
-        LoadSave.createLevel("level1", idArray);
-        return "level1";
+    public void mouseReleased(int x, int y) {
+        actionBar.mouseReleased(x, y);
+    }
+
+    private void createLevel() {
+        int[][] idArray = LevelBuilder.obsoleteGetLevelData();
+    }
+
+    private int[][] loadLevel(int levelNumber) {
+        level = LoadSave.getLevelData(levelNumber);
+        ArrayList<PathPoint> pathPoints = LoadSave.getLevelPathPoints(levelNumber);
+
+        start = pathPoints.get(0);
+        end = pathPoints.get(1);
+
+        return level;
     }
 }

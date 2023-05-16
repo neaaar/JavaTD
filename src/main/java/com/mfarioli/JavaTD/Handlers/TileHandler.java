@@ -14,7 +14,7 @@ import static com.mfarioli.JavaTD.Helpers.LoadSave.getSpriteAtlas;
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.*;
 
 public class TileHandler {
-    public Tile GRASS, WATER, ROAD_LR, ROAD_TB, ROAD_B_TO_R, ROAD_L_TO_B, ROAD_L_TO_T, ROAD_T_TO_R, BL_WATER_CORNER, TL_WATER_CORNER, TR_WATER_CORNER, BR_WATER_CORNER, T_WATER, R_WATER, B_WATER, L_WATER, TL_ISLE, TR_ISLE, BR_ISLE, BL_ISLE;
+    public Tile GRASS, WATER, ROAD_LR, ROAD_TB, ROAD_B_TO_R, ROAD_L_TO_B, ROAD_L_TO_T, ROAD_T_TO_R, BL_WATER_CORNER, TL_WATER_CORNER, TR_WATER_CORNER, BR_WATER_CORNER, T_WATER, R_WATER, B_WATER, L_WATER, TL_ISLE, TR_ISLE, BR_ISLE, BL_ISLE, START, END;
 
     private BufferedImage atlas;
     public ArrayList<Tile> tiles = new ArrayList<>();
@@ -57,6 +57,9 @@ public class TileHandler {
     * 17 - Top Right Isle
     * 18 - Bottom Right Isle
     * 19 - Bottom Left Isle
+    *
+    * 20 - Start Tile
+    * 21 - End Tile
      */
     private void createTiles() {
         int id = 0;
@@ -92,6 +95,10 @@ public class TileHandler {
         tiles.addAll(corners);
         tiles.addAll(beaches);
         tiles.addAll(islands);
+
+        //remember that start and end points have ids equal to -1 and -2 respectively
+        tiles.add(START = new Tile(getSprite(7, 2), -1, ROAD_TILE));
+        tiles.add(END = new Tile(getSprite(8, 2), -2, ROAD_TILE));
     }
 
     private void loadAtlas() {

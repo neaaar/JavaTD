@@ -3,7 +3,7 @@ package com.mfarioli.JavaTD.Entities.Enemies;
 import java.awt.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
 
-public class Enemy {
+public abstract class Enemy {
     private int id;
     private float x, y;
 
@@ -77,7 +77,7 @@ public class Enemy {
         this.y = y;
         this.bounds = new Rectangle((int)x, (int)y, 32, 32);
         this.enemyTipe = enemyTipe;
-        lastDirection = RIGHT;
+        lastDirection = -1; //starting direction
     }
 
     public void move(float speed, int direction) {

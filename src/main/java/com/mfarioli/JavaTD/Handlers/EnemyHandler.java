@@ -1,7 +1,8 @@
 package com.mfarioli.JavaTD.Handlers;
 
-import com.mfarioli.JavaTD.Entities.Enemies.Enemy;
+import com.mfarioli.JavaTD.Entities.Enemies.*;
 import com.mfarioli.JavaTD.Helpers.LoadSave;
+import com.mfarioli.JavaTD.Objects.PathPoint;
 import com.mfarioli.JavaTD.Scenes.Playing;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
+import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.*;
 
 public class EnemyHandler {
@@ -18,52 +20,82 @@ public class EnemyHandler {
 
     private ArrayList<Enemy> enemies;
 
-    private float speed = 0.5f;
+    //private float speed = 0.5f;
 
-    public EnemyHandler(Playing playing) {
+    private PathPoint start, end;
+
+    public EnemyHandler(Playing playing, PathPoint start, PathPoint end) {
         this.playing = playing;
+        this.start = start;
+        this.end = end;
         enemyImages = new BufferedImage[4];
         loadEnemyImages();
 
         enemies = new ArrayList<>();
-        addEnemy(3*32, 9*32);
+        addEnemy(ORC);
+        addEnemy(BAT);
+        addEnemy(KNIGHT);
+        addEnemy(WOLF);
     }
 
     private void loadEnemyImages() {
         BufferedImage atlas = LoadSave.getSpriteAtlas();
-        enemyImages[0] = atlas.getSubimage(0*32, 1*32, 32, 32);
-        enemyImages[1] = atlas.getSubimage(1*32, 1*32, 32, 32);
-        enemyImages[2] = atlas.getSubimage(2*32, 1*32, 32, 32);
-        enemyImages[3] = atlas.getSubimage(3*32, 1*32, 32, 32);
+
+        for(int i = 0; i < 4; i++) {
+            enemyImages[i] = atlas.getSubimage(i*32, 1*32, 32, 32);
+        }
     }
 
-    public void addEnemy(int x, int y) {
-        enemies.add(new Enemy(0, x, y, 0));
+    public void addEnemy(int enemyType) {
+        int x = start.getxCord();
+        int y = start.getyCord();
+
+        switch(enemyType) {
+            case ORC -> {
+                enemies.add(new Orc(0, x, y));
+                break;
+            }
+
+            case BAT -> {
+                enemies.add(new Bat(0, x, y));
+                break;
+            }
+
+            case KNIGHT -> {
+                enemies.add(new Knight(0, x, y));
+                break;
+            }
+
+            case WOLF -> {
+                enemies.add(new Wolf(0, x, y));
+                break;
+            }
+        }
     }
 
     public void update() {
         for(Enemy e : enemies) {
             //pathfinding: given enemy pos and direction, is next tile a road tile? if yes, move there
-            if(isNextTileRoad(e)) {
-
-            }
+            updateEnemyMovement(e);
         }
     }
 
-    private boolean isNextTileRoad(Enemy e) {
-        int newX = (int)(e.getX() + getSpeedX(e.getLastDirection()));
-        int newY = (int)(e.getY() + getSpeedY(e.getLastDirection()));
-
-        if(getTileType(newX, newY) == ROAD_TILE) {
-            e.move(speed, e.getLastDirection());
-            return true;
-        } else if(isAtEnd(e)) {
-            return false;
-        } else {
+    private void updateEnemyMovement(Enemy e) {
+        if(e.getLastDirection() == -1) {
             setNewDirectionAndMove(e);
         }
 
-        return false;
+        int newX = (int)(e.getX() + getSpeedX(e.getLastDirection(), e.getEnemyTipe()));
+        int newY = (int)(e.getY() + getSpeedY(e.getLastDirection(), e.getEnemyTipe()));
+
+        if(getTileType(newX, newY) == ROAD_TILE) {
+            e.move(getSpeed(e.getEnemyTipe()), e.getLastDirection());
+        } else if(isAtEnd(e)) {
+            //e.kill(), takeOneLife()
+            System.out.println("Life lost");
+        } else {
+            setNewDirectionAndMove(e);
+        }
     }
 
     private void setNewDirectionAndMove(Enemy e) {
@@ -73,41 +105,29 @@ public class EnemyHandler {
         int yCord = (int)(e.getY()/32);
         fixEnemyOffsetTile(e, direction, xCord, yCord);
 
+        if(isAtEnd(e)) return; //no movement if the enemy is at the end point
+
         if(direction == LEFT || direction == RIGHT) {
-            int newY = (int)(e.getY() + getSpeedY(UP));
+            int newY = (int)(e.getY() + getSpeedY(UP, e.getEnemyTipe()));
             if(getTileType((int)e.getX(), newY) == ROAD_TILE) {
-                e.move(speed, UP);
+                e.move(getSpeed(e.getEnemyTipe()), UP);
             } else {
-                e.move(speed, DOWN);
+                e.move(getSpeed(e.getEnemyTipe()), DOWN);
             }
         }
 
-        if(direction == UP || direction == DOWN) {
-            int newX = (int)(e.getX() + getSpeedX(RIGHT));
+        if(direction == UP || direction == DOWN || direction == -1) {
+            int newX = (int)(e.getX() + getSpeedX(RIGHT, e.getEnemyTipe()));
             if(getTileType(newX, (int)e.getY()) == ROAD_TILE) {
-                e.move(speed, RIGHT);
+                e.move(getSpeed(e.getEnemyTipe()), RIGHT);
             } else {
-                e.move(speed, LEFT);
+                e.move(getSpeed(e.getEnemyTipe()), LEFT);
             }
         }
     }
 
     private void fixEnemyOffsetTile(Enemy e, int direction, int xCord, int yCord) {
         switch(direction) {
-/*            case LEFT -> {
-                if(xCord > 0) {
-                    xCord--;
-                }
-                break;
-            }
-
-            case UP -> {
-                if(yCord > 0) {
-                    yCord--;
-                }
-                break;
-            }*/
-
             case RIGHT -> {
                 if(xCord < 19) {
                     xCord++;
@@ -121,6 +141,10 @@ public class EnemyHandler {
                 }
                 break;
             }
+
+            default -> {
+                break;
+            }
         }
 
         e.setPosition(xCord*32, yCord*32);
@@ -128,24 +152,26 @@ public class EnemyHandler {
 
     private boolean isAtEnd(Enemy e) {
         //if enemy pos = end return true
-
+        if(e.getX() == end.getxCord() && e.getY() == end.getyCord()) {
+            return true;
+        }
         return false;
     }
 
-    private float getSpeedX(int direction) {
+    private float getSpeedX(int direction, int enemyType) {
         if(direction == LEFT) {
-            return -speed;
+            return -getSpeed(enemyType);
         } else if(direction == RIGHT) {
-            return speed + 32;
+            return getSpeed(enemyType) + 32;
         }
         return 0;
     }
 
-    private float getSpeedY(int direction) {
+    private float getSpeedY(int direction, int enemyType) {
         if(direction == UP) {
-            return -speed;
+            return -getSpeed(enemyType);
         } else if(direction == DOWN) {
-            return speed + 32;
+            return getSpeed(enemyType) + 32;
         }
         return 0;
     }
@@ -161,6 +187,6 @@ public class EnemyHandler {
     }
 
     private void drawEnemy(Enemy enemy, Graphics g) {
-        g.drawImage(enemyImages[enemy.getId()], (int)enemy.getX(), (int)enemy.getY(), null);
+        g.drawImage(enemyImages[enemy.getEnemyTipe()], (int)enemy.getX(), (int)enemy.getY(), null);
     }
 }

@@ -89,7 +89,7 @@ public class Game extends JFrame implements Runnable {
     }
 
     private void initialize() {
-        setLocation(400, 150);
+        setLocation(400, 80);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 

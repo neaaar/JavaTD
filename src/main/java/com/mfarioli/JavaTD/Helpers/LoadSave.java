@@ -1,5 +1,7 @@
 package com.mfarioli.JavaTD.Helpers;
 
+import com.mfarioli.JavaTD.Objects.PathPoint;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -41,7 +43,7 @@ public class LoadSave {
     * since getLevelData  can only search for levels called levelN.
     * idArray is the 2D array containing the level we want to store.
      */
-    public static void createLevel(String levelName, int[][] idArray) {
+    public static void createLevel(String levelName, int[][] idArray, PathPoint start, PathPoint end) {
         File newLevel = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/" + levelName + ".txt");
         if (!newLevel.getParentFile().exists())  {
             newLevel.getParentFile().mkdirs();
@@ -58,10 +60,10 @@ public class LoadSave {
             throw new RuntimeException(e);
         }
 
-        WriteToFile(newLevel, idArray);
+        WriteToFile(newLevel, idArray, start, end);
     }
 
-    private static void WriteToFile(File f, int[][] idArray) {
+    private static void WriteToFile(File f, int[][] idArray, PathPoint start, PathPoint end) {
         try {
             PrintWriter printWriter = new PrintWriter(f);
 
@@ -70,6 +72,11 @@ public class LoadSave {
                     printWriter.println(idArray[y][x]);
                 }
             }
+
+            printWriter.println(start.getxCord());
+            printWriter.println(start.getyCord());
+            printWriter.println(end.getxCord());
+            printWriter.println(end.getyCord());
 
             printWriter.close();
         } catch (FileNotFoundException e) {
@@ -111,5 +118,22 @@ public class LoadSave {
         }
 
         return list;
+    }
+
+    public static ArrayList<PathPoint> getLevelPathPoints(int n) {
+        File levelFile = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/level" + n +
+                ".txt");
+
+        if(!levelFile.exists()) {
+            System.out.println("Level with that number doesn't exist");
+            return null;
+        }
+
+        ArrayList<Integer> list = readFromFile(levelFile);
+        ArrayList<PathPoint> pathPoints = new ArrayList<>();
+        pathPoints.add(new PathPoint(list.get(400), list.get(401)));
+        pathPoints.add(new PathPoint(list.get(402), list.get(403)));
+
+        return pathPoints;
     }
 }

@@ -2,6 +2,7 @@ package com.mfarioli.JavaTD.UI;
 
 import com.mfarioli.JavaTD.Entities.Allies.Tower;
 import com.mfarioli.JavaTD.Game;
+import com.mfarioli.JavaTD.Helpers.Constants;
 import com.mfarioli.JavaTD.Scenes.Playing;
 
 import static com.mfarioli.JavaTD.GameStates.*;
@@ -19,7 +20,7 @@ public class ActionBar extends Bar {
 
     private CustomButton[] towerButtons;
 
-    private Tower selectedTower;
+    private Tower selectedTower, displayedTower;
 
 
     public ActionBar(int x, int y, int width, int height, Playing playing) {
@@ -59,17 +60,44 @@ public class ActionBar extends Bar {
     }
 
     public void draw(Graphics g) {
-
-        // Background
+        //Background
         g.setColor(new Color(220, 123, 15));
         g.fillRect(x, y, width, height);
 
-        // Buttons
+        //Buttons
         drawButtons(g);
         drawButtonFeedback(g, bMenu);
+
+        //Displayed tower
+        drawDisplayedTower(g);
     }
 
-    public void mouseClicked(int x, int y) {
+    public void displayTower(Tower t) { displayedTower = t; }
+
+    private void drawDisplayedTower(Graphics g) {
+        if(displayedTower == null) return;
+
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(390, 650, 225, 60);
+
+        g.setColor(Color.BLACK);
+        g.drawRect(390, 650, 225, 60);
+
+        g.drawImage(playing.getTowerHandler().getTowerImages()[displayedTower.getTowerType()], 400, 665, 30, 30, null);
+        g.drawRect(395, 660, 40, 40);
+
+        g.setFont(new Font ("LucidaSans", Font.BOLD, 15));
+        g.drawString("" + Constants.TowerTypes.getTowerName(displayedTower.getTowerType()), 440, 670);
+
+        drawDisplayedTowerBorder(g);
+    }
+
+    public void drawDisplayedTowerBorder(Graphics g) {
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawRect(displayedTower.getX(), displayedTower.getY(), 32, 32);
+    }
+
+        public void mouseClicked(int x, int y) {
         if (bMenu.getBounds().contains(x, y)) {
             setGameState(MENU);
         } else {

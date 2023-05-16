@@ -7,6 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class CustomKeyListener implements KeyListener {
+    private Game game;
+
+    public CustomKeyListener(Game game) {
+        this.game = game;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -14,9 +20,8 @@ public class CustomKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_A) {
-            System.out.println("change to playing scene");
-            GameStates.gameState = GameStates.PLAYING;
+        if(GameStates.gameState == GameStates.PLAYING) {
+            game.getPlaying().keyPressed(e);
         }
     }
 

@@ -14,6 +14,7 @@ import com.mfarioli.JavaTD.UI.BottomBar;
 import com.mfarioli.JavaTD.UI.CustomButton;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.GRASS_TILE;
@@ -80,11 +81,12 @@ public class Playing extends SuperScene implements SceneInterface{
                 }
             }
         }
-        bMenu.draw(g);
+        //bMenu.draw(g);
         actionBar.draw(g);
 
         enemyHandler.draw(g);
         towerHandler.draw(g);
+        drawHighlight(g);
 
         drawSelectedTower(g);
     }
@@ -99,6 +101,13 @@ public class Playing extends SuperScene implements SceneInterface{
                 animationIndex = 0;
             }
         }
+    }
+
+    private void drawHighlight(Graphics g) {
+        g.setColor(new Color(211, 211, 211, 128));
+        g.fillRect(mouseX, mouseY, 32, 32);
+        g.setColor(new Color(0, 0, 0, 128));
+        g.drawRect(mouseX, mouseY, 32, 32);
     }
 
     public void update() {
@@ -134,8 +143,9 @@ public class Playing extends SuperScene implements SceneInterface{
         if(y >= 640) {
             actionBar.mouseClicked(x, y);
         } else {
-            if(selectedTower == null) return;
+            if(selectedTower == null) displayInfo(mouseX, mouseY);
             if(!isTileGrass(mouseX, mouseY)) return;
+            if(checkTowerAt(mouseX, mouseY) != null) return;
 
             towerHandler.addTower(selectedTower, mouseX, mouseY);
             selectedTower = null;
@@ -146,10 +156,25 @@ public class Playing extends SuperScene implements SceneInterface{
         }
     }
 
+    private void displayInfo(int x, int y) {
+        Tower t = checkTowerAt(x, y);
+        actionBar.displayTower(t);
+    }
+
     private boolean isTileGrass(int x, int y) {
         int id = level[y / 32][x / 32];
         int tileType = getGame().getTileHandler().getTile(id).getTileType();
         return tileType == GRASS_TILE;
+    }
+
+    private Tower checkTowerAt(int x, int y) {
+        return towerHandler.checkTowerAt(x, y);
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            selectedTower = null;
+        }
     }
 
     @Override

@@ -36,6 +36,7 @@ public class Menu extends SuperScene implements SceneInterface{
     public void render(Graphics g) {
         background = LoadSave.getMenuBackground();
         g.drawImage(background, 0, 0, null);
+        g.setFont(new Font ("LucidaSans", Font.PLAIN, 15));
         bPlaying.draw(g);
         bSettings.draw(g);
         bQuit.draw(g);

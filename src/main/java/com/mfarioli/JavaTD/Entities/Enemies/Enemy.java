@@ -1,7 +1,10 @@
 package com.mfarioli.JavaTD.Entities.Enemies;
 
+import com.mfarioli.JavaTD.Helpers.Constants;
+
 import java.awt.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
+import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.*;
 
 public abstract class Enemy {
     private int id;
@@ -78,6 +81,10 @@ public abstract class Enemy {
         this.bounds = new Rectangle((int)x, (int)y, 32, 32);
         this.enemyTipe = enemyTipe;
         lastDirection = -1; //starting direction
+    }
+
+    protected void setStartingHealth() {
+        health = Constants.EnemyTypes.getStartingHealth(enemyTipe);
     }
 
     public void move(float speed, int direction) {

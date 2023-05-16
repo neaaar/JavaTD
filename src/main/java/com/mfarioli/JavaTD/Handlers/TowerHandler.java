@@ -44,6 +44,16 @@ public class TowerHandler {
         towers.add(new Tower(towerAmount++, xCord, yCord, selectedTower.getTowerType()));
     }
 
+    public Tower checkTowerAt(int x, int y) {
+        for(Tower t : towers) {
+            if(t.getX() == x && t.getY() == y) {
+                return t;
+            }
+        }
+
+        return null;
+    }
+
     public void draw(Graphics g) {
         for(Tower t : towers) {
             g.drawImage(towerImages[t.getTowerType()], t.getX(), t.getY(), null);

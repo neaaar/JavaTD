@@ -7,16 +7,16 @@ import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.*;
 
 public abstract class Enemy {
-    private int id;
-    private float x, y;
+    protected int id;
+    protected float x, y;
 
-    private Rectangle bounds;
+    protected Rectangle bounds;
 
-    private int health;
+    protected int health, maxhealth;
 
-    private int enemyTipe;
+    protected int enemyTipe;
 
-    private int lastDirection;
+    protected int lastDirection;
 
     public int getId() {
         return id;
@@ -81,10 +81,16 @@ public abstract class Enemy {
         this.bounds = new Rectangle((int)x, (int)y, 32, 32);
         this.enemyTipe = enemyTipe;
         lastDirection = -1; //starting direction
+        setStartingHealth();
     }
 
-    protected void setStartingHealth() {
+    private void setStartingHealth() {
         health = Constants.EnemyTypes.getStartingHealth(enemyTipe);
+        maxhealth = health;
+    }
+
+    public float getHealthBarFloat() {
+        return (float)health/maxhealth;
     }
 
     public void move(float speed, int direction) {

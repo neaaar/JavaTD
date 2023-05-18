@@ -20,7 +20,7 @@ public class EnemyHandler {
 
     private ArrayList<Enemy> enemies;
 
-    //private float speed = 0.5f;
+    private int healthBarWidth;
 
     private PathPoint start, end;
 
@@ -30,6 +30,7 @@ public class EnemyHandler {
         this.end = end;
         enemyImages = new BufferedImage[4];
         loadEnemyImages();
+        healthBarWidth = 24;
 
         enemies = new ArrayList<>();
         addEnemy(ORC);
@@ -183,10 +184,22 @@ public class EnemyHandler {
     public void draw(Graphics g) {
         for(Enemy e : enemies) {
             drawEnemy(e, g);
+            drawEnemyHealthBar(e, g);
         }
     }
 
     private void drawEnemy(Enemy enemy, Graphics g) {
         g.drawImage(enemyImages[enemy.getEnemyTipe()], (int)enemy.getX(), (int)enemy.getY(), null);
+    }
+
+    private void drawEnemyHealthBar(Enemy e, Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect((int)e.getX() + 16 - (healthBarWidth / 2), (int)e.getY() - 5, healthBarWidth, 3);
+        g.setColor(Color.RED);
+        g.fillRect((int)e.getX() + 16 - (healthBarWidth / 2), (int)e.getY() - 5, getNewBarWidth(e), 3);
+    }
+
+    private int getNewBarWidth(Enemy e) {
+        return (int)(healthBarWidth*e.getHealthBarFloat());
     }
 }

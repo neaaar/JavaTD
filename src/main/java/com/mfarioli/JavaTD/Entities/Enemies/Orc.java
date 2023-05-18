@@ -6,6 +6,5 @@ public class Orc extends Enemy{
 
     public Orc(int id, float x, float y) {
         super(id, x, y, ORC);
-        setStartingHealth();
     }
 }

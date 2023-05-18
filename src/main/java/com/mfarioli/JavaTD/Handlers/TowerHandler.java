@@ -21,7 +21,6 @@ public class TowerHandler {
 
     private int towerAmount;
 
-
     public TowerHandler(Playing playing) {
         this.playing = playing;
         towers = new ArrayList<>();
@@ -33,8 +32,8 @@ public class TowerHandler {
         BufferedImage atlas = LoadSave.getSpriteAtlas();
         towerImages = new BufferedImage[3];
 
-        for(int i = 0; i < 3; i++) {
-            towerImages[i] = atlas.getSubimage((4 + i)*32, 1*32, 32, 32);
+        for (int i = 0; i < 3; i++) {
+            towerImages[i] = atlas.getSubimage((4 + i) * 32, 1 * 32, 32, 32);
         }
     }
 
@@ -47,8 +46,8 @@ public class TowerHandler {
     }
 
     public Tower checkTowerAt(int x, int y) {
-        for(Tower t : towers) {
-            if(t.getX() == x && t.getY() == y) {
+        for (Tower t : towers) {
+            if (t.getX() == x && t.getY() == y) {
                 return t;
             }
         }
@@ -57,23 +56,26 @@ public class TowerHandler {
     }
 
     public void draw(Graphics g) {
-        for(Tower t : towers) {
+        for (Tower t : towers) {
             g.drawImage(towerImages[t.getTowerType()], t.getX(), t.getY(), null);
         }
     }
 
     public void update() {
-        for(Tower t : towers) {
+        for (Tower t : towers) {
             t.update();
             attackEnemyIfInRange(t);
         }
     }
 
     private void attackEnemyIfInRange(Tower t) {
-        for(Enemy e : playing.getEnemyHandler().getEnemies()) {
-            if(!e.isAlive()) continue; //if enemy isn't alive continue to next enemy
-            if(!IsEnemyInRange(t,e)) continue; //if enemy not in range continue to next enemy
-            if(!t.isCooldownOver()) continue; //if tower cooldown isn't over continue to next enemy
+        for (Enemy e : playing.getEnemyHandler().getEnemies()) {
+            if (!e.isAlive())
+                continue; //if enemy isn't alive continue to next enemy
+            if (!IsEnemyInRange(t, e))
+                continue; //if enemy not in range continue to next enemy
+            if (!t.isCooldownOver())
+                continue; //if tower cooldown isn't over continue to next enemy
 
             //all conditions satisfied, tower can shoot enemy
             playing.shootEnemy(t, e);

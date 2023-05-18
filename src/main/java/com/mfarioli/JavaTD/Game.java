@@ -103,7 +103,6 @@ public class Game extends JFrame implements Runnable {
         gameThread.start();
     }
 
-
     private void updateGame() {
         switch (GameStates.gameState) {
             case PLAYING -> {
@@ -139,26 +138,26 @@ public class Game extends JFrame implements Runnable {
         long lastTimeCheck = System.currentTimeMillis();
         long now;
 
-        while(true) {
+        while (true) {
             //update now variable
             now = System.nanoTime();
 
             //enough time has passed, render frame
-            if(now - lastFrame > timePerFrame) {
+            if (now - lastFrame > timePerFrame) {
                 lastFrame = now;
                 repaint();
                 frames++;
             }
 
             //enough time has passed, update the game
-            if(now - lastUpdate > timePerUpdate) {
+            if (now - lastUpdate > timePerUpdate) {
                 lastUpdate = now;
                 updateGame();
                 updates++;
             }
 
             //a second has passed, print FPS and UPS
-            if(System.currentTimeMillis() - lastTimeCheck >= 1000) {
+            if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
                 lastTimeCheck = System.currentTimeMillis();
                 System.out.println("FPS: " + frames + " | UPS: " + updates);
                 frames = 0;

@@ -16,6 +16,7 @@ public class Tile {
     public BufferedImage getSprite(int animationIndex) {
         return sprite[animationIndex];
     }
+
     public BufferedImage getSprite() {
         return sprite[0];
     }

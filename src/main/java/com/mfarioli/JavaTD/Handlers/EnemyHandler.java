@@ -46,8 +46,8 @@ public class EnemyHandler {
     private void loadEnemyImages() {
         BufferedImage atlas = LoadSave.getSpriteAtlas();
 
-        for(int i = 0; i < 4; i++) {
-            enemyImages[i] = atlas.getSubimage(i*32, 1*32, 32, 32);
+        for (int i = 0; i < 4; i++) {
+            enemyImages[i] = atlas.getSubimage(i * 32, 1 * 32, 32, 32);
         }
     }
 
@@ -55,7 +55,7 @@ public class EnemyHandler {
         int x = start.getxCord();
         int y = start.getyCord();
 
-        switch(enemyType) {
+        switch (enemyType) {
             case ORC -> {
                 enemies.add(new Orc(0, x, y));
                 break;
@@ -79,24 +79,25 @@ public class EnemyHandler {
     }
 
     public void update() {
-        for(Enemy e : enemies) {
-            if(!e.isAlive()) continue; //if enemy isn't alive don't update it
+        for (Enemy e : enemies) {
+            if (!e.isAlive())
+                continue; //if enemy isn't alive don't update it
             //pathfinding: given enemy pos and direction, is next tile a road tile? if yes, move there
             updateEnemyMovement(e);
         }
     }
 
     private void updateEnemyMovement(Enemy e) {
-        if(e.getLastDirection() == -1) {
+        if (e.getLastDirection() == -1) {
             setNewDirectionAndMove(e);
         }
 
-        int newX = (int)(e.getX() + getSpeedX(e.getLastDirection(), e.getEnemyTipe()));
-        int newY = (int)(e.getY() + getSpeedY(e.getLastDirection(), e.getEnemyTipe()));
+        int newX = (int) (e.getX() + getSpeedX(e.getLastDirection(), e.getEnemyTipe()));
+        int newY = (int) (e.getY() + getSpeedY(e.getLastDirection(), e.getEnemyTipe()));
 
-        if(getTileType(newX, newY) == ROAD_TILE) {
+        if (getTileType(newX, newY) == ROAD_TILE) {
             e.move(getSpeed(e.getEnemyTipe()), e.getLastDirection());
-        } else if(isAtEnd(e)) {
+        } else if (isAtEnd(e)) {
             //e.kill(), takeOneLife()
             System.out.println("Life lost");
         } else {
@@ -107,24 +108,25 @@ public class EnemyHandler {
     private void setNewDirectionAndMove(Enemy e) {
         int direction = e.getLastDirection();
 
-        int xCord = (int)(e.getX()/32);
-        int yCord = (int)(e.getY()/32);
+        int xCord = (int) (e.getX() / 32);
+        int yCord = (int) (e.getY() / 32);
         fixEnemyOffsetTile(e, direction, xCord, yCord);
 
-        if(isAtEnd(e)) return; //no movement if the enemy is at the end point
+        if (isAtEnd(e))
+            return; //no movement if the enemy is at the end point
 
-        if(direction == LEFT || direction == RIGHT) {
-            int newY = (int)(e.getY() + getSpeedY(UP, e.getEnemyTipe()));
-            if(getTileType((int)e.getX(), newY) == ROAD_TILE) {
+        if (direction == LEFT || direction == RIGHT) {
+            int newY = (int) (e.getY() + getSpeedY(UP, e.getEnemyTipe()));
+            if (getTileType((int) e.getX(), newY) == ROAD_TILE) {
                 e.move(getSpeed(e.getEnemyTipe()), UP);
             } else {
                 e.move(getSpeed(e.getEnemyTipe()), DOWN);
             }
         }
 
-        if(direction == UP || direction == DOWN || direction == -1) {
-            int newX = (int)(e.getX() + getSpeedX(RIGHT, e.getEnemyTipe()));
-            if(getTileType(newX, (int)e.getY()) == ROAD_TILE) {
+        if (direction == UP || direction == DOWN || direction == -1) {
+            int newX = (int) (e.getX() + getSpeedX(RIGHT, e.getEnemyTipe()));
+            if (getTileType(newX, (int) e.getY()) == ROAD_TILE) {
                 e.move(getSpeed(e.getEnemyTipe()), RIGHT);
             } else {
                 e.move(getSpeed(e.getEnemyTipe()), LEFT);
@@ -133,16 +135,16 @@ public class EnemyHandler {
     }
 
     private void fixEnemyOffsetTile(Enemy e, int direction, int xCord, int yCord) {
-        switch(direction) {
+        switch (direction) {
             case RIGHT -> {
-                if(xCord < 19) {
+                if (xCord < 19) {
                     xCord++;
                 }
                 break;
             }
 
             case DOWN -> {
-                if(yCord < 19) {
+                if (yCord < 19) {
                     yCord++;
                 }
                 break;
@@ -153,30 +155,30 @@ public class EnemyHandler {
             }
         }
 
-        e.setPosition(xCord*32, yCord*32);
+        e.setPosition(xCord * 32, yCord * 32);
     }
 
     private boolean isAtEnd(Enemy e) {
         //if enemy pos = end return true
-        if(e.getX() == end.getxCord() && e.getY() == end.getyCord()) {
+        if (e.getX() == end.getxCord() && e.getY() == end.getyCord()) {
             return true;
         }
         return false;
     }
 
     private float getSpeedX(int direction, int enemyType) {
-        if(direction == LEFT) {
+        if (direction == LEFT) {
             return -getSpeed(enemyType);
-        } else if(direction == RIGHT) {
+        } else if (direction == RIGHT) {
             return getSpeed(enemyType) + 32;
         }
         return 0;
     }
 
     private float getSpeedY(int direction, int enemyType) {
-        if(direction == UP) {
+        if (direction == UP) {
             return -getSpeed(enemyType);
-        } else if(direction == DOWN) {
+        } else if (direction == DOWN) {
             return getSpeed(enemyType) + 32;
         }
         return 0;
@@ -187,25 +189,26 @@ public class EnemyHandler {
     }
 
     public void draw(Graphics g) {
-        for(Enemy e : enemies) {
-            if(!e.isAlive()) continue; //if enemy isn't alive don't draw it
+        for (Enemy e : enemies) {
+            if (!e.isAlive())
+                continue; //if enemy isn't alive don't draw it
             drawEnemy(e, g);
             drawEnemyHealthBar(e, g);
         }
     }
 
     private void drawEnemy(Enemy enemy, Graphics g) {
-        g.drawImage(enemyImages[enemy.getEnemyTipe()], (int)enemy.getX(), (int)enemy.getY(), null);
+        g.drawImage(enemyImages[enemy.getEnemyTipe()], (int) enemy.getX(), (int) enemy.getY(), null);
     }
 
     private void drawEnemyHealthBar(Enemy e, Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect((int)e.getX() + 16 - (healthBarWidth / 2), (int)e.getY() - 5, healthBarWidth, 3);
+        g.fillRect((int) e.getX() + 16 - (healthBarWidth / 2), (int) e.getY() - 5, healthBarWidth, 3);
         g.setColor(Color.RED);
-        g.fillRect((int)e.getX() + 16 - (healthBarWidth / 2), (int)e.getY() - 5, getNewBarWidth(e), 3);
+        g.fillRect((int) e.getX() + 16 - (healthBarWidth / 2), (int) e.getY() - 5, getNewBarWidth(e), 3);
     }
 
     private int getNewBarWidth(Enemy e) {
-        return (int)(healthBarWidth*e.getHealthBarFloat());
+        return (int) (healthBarWidth * e.getHealthBarFloat());
     }
 }

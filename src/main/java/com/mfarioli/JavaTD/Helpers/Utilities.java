@@ -9,8 +9,8 @@ public class Utilities {
     public static int[][] arrayListTo2Dint(ArrayList<Integer> list, int xSize, int ySize) {
         int[][] array = new int[xSize][ySize];
 
-        for(int y = 0; y < array.length; y++) {
-            for(int x = 0; x < array[y].length; x++) {
+        for (int y = 0; y < array.length; y++) {
+            for (int x = 0; x < array[y].length; x++) {
                 int index = y * ySize + x;
                 array[y][x] = list.get(index);
             }
@@ -43,7 +43,7 @@ public class Utilities {
         BufferedImage newImage = new BufferedImage(width, height, images[0].getType());
         Graphics2D graphics2D = newImage.createGraphics();
 
-        for(BufferedImage image : images) {
+        for (BufferedImage image : images) {
             graphics2D.drawImage(image, 0, 0, null);
         }
         graphics2D.dispose();
@@ -59,8 +59,8 @@ public class Utilities {
         BufferedImage newImage = new BufferedImage(width, height, images[0].getType());
         Graphics2D graphics2D = newImage.createGraphics();
 
-        for(int i = 0; i < images.length; i++) {
-            if(rotAtIndex == i) {
+        for (int i = 0; i < images.length; i++) {
+            if (rotAtIndex == i) {
                 graphics2D.rotate(Math.toRadians(rotAngle), width / 2, height / 2);
             }
             graphics2D.drawImage(images[i], 0, 0, null);
@@ -97,6 +97,6 @@ public class Utilities {
         float xDiff = Math.abs(x1 - x2);
         float yDiff = Math.abs(y1 - y2);
 
-        return (int)Math.hypot(xDiff, yDiff);
+        return (int) Math.hypot(xDiff, yDiff);
     }
 }

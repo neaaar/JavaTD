@@ -15,7 +15,7 @@ import java.util.Random;
 
 import static java.lang.System.exit;
 
-public class Menu extends SuperScene implements SceneInterface{
+public class Menu extends SuperScene implements SceneInterface {
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
 
     private BufferedImage atlas, background;
@@ -36,7 +36,7 @@ public class Menu extends SuperScene implements SceneInterface{
     public void render(Graphics g) {
         background = LoadSave.getMenuBackground();
         g.drawImage(background, 0, 0, null);
-        g.setFont(new Font ("LucidaSans", Font.PLAIN, 15));
+        g.setFont(new Font("LucidaSans", Font.PLAIN, 15));
         bPlaying.draw(g);
         bSettings.draw(g);
         bQuit.draw(g);
@@ -48,9 +48,9 @@ public class Menu extends SuperScene implements SceneInterface{
 
     //loads every sprite in spriteatlas.png and adds it to a list
     private void loadSprites() {
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 10; x++) {
-                sprites.add(atlas.getSubimage(x*32, y*32, 32, 32));
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 10; x++) {
+                sprites.add(atlas.getSubimage(x * 32, y * 32, 32, 32));
             }
         }
     }
@@ -73,15 +73,15 @@ public class Menu extends SuperScene implements SceneInterface{
 
     @Override
     public void mouseClicked(int x, int y) {
-        if(bPlaying.getBounds().contains(x, y)) {
+        if (bPlaying.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.PLAYING);
         }
 
-        if(bSettings.getBounds().contains(x, y)) {
+        if (bSettings.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.SETTINGS);
         }
 
-        if(bQuit.getBounds().contains(x, y)) {
+        if (bQuit.getBounds().contains(x, y)) {
             exit(0);
         }
     }
@@ -89,17 +89,17 @@ public class Menu extends SuperScene implements SceneInterface{
     @Override
     public void mouseMoved(int x, int y) {
         bPlaying.setMouseOver(false);
-        if(bPlaying.getBounds().contains(x, y)) {
+        if (bPlaying.getBounds().contains(x, y)) {
             bPlaying.setMouseOver(true);
         }
 
         bSettings.setMouseOver(false);
-        if(bSettings.getBounds().contains(x, y)) {
+        if (bSettings.getBounds().contains(x, y)) {
             bSettings.setMouseOver(true);
         }
 
         bQuit.setMouseOver(false);
-        if(bQuit.getBounds().contains(x, y)) {
+        if (bQuit.getBounds().contains(x, y)) {
             bQuit.setMouseOver(true);
         }
     }

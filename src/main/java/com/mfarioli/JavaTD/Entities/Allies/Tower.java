@@ -10,9 +10,9 @@ public class Tower {
 
     private float cooldownTick;
     /*
-    * using a counter instead of System.nanotime() because otherwise
-    * System.nanotime() would mess things up after a game pause
-    */
+     * using a counter instead of System.nanotime() because otherwise
+     * System.nanotime() would mess things up after a game pause
+     */
 
     public int getId() {
         return id;

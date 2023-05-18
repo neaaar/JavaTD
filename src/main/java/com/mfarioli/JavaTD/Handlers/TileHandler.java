@@ -31,35 +31,35 @@ public class TileHandler {
     }
 
     /*
-    * tiles index to tile name:
-    * 0  - Grass
-    * 1  - Water
-    *
-    * 2  - Road Left to Right
-    * 3  - Road Top to Bottom
-    *
-    * 4  - Road Bottom to Right
-    * 5  - Road Left to Bottom
-    * 6  - Road Left to Top
-    * 7  - Road Top to Right
-    *
-    * 8  - Bottom Left Water Corner
-    * 9  - Top Left Water Corner
-    * 10 - Top Right Water Corner
-    * 11 - Bottom Right Water Corner
-    *
-    * 12 - Top Water Border
-    * 13 - Right Water Border
-    * 14 - Bottom Water Border
-    * 15 - Left Water Border
-    *
-    * 16 - Top Left Isle
-    * 17 - Top Right Isle
-    * 18 - Bottom Right Isle
-    * 19 - Bottom Left Isle
-    *
-    * 20 - Start Tile
-    * 21 - End Tile
+     * tiles index to tile name:
+     * 0  - Grass
+     * 1  - Water
+     *
+     * 2  - Road Left to Right
+     * 3  - Road Top to Bottom
+     *
+     * 4  - Road Bottom to Right
+     * 5  - Road Left to Bottom
+     * 6  - Road Left to Top
+     * 7  - Road Top to Right
+     *
+     * 8  - Bottom Left Water Corner
+     * 9  - Top Left Water Corner
+     * 10 - Top Right Water Corner
+     * 11 - Bottom Right Water Corner
+     *
+     * 12 - Top Water Border
+     * 13 - Right Water Border
+     * 14 - Bottom Water Border
+     * 15 - Left Water Border
+     *
+     * 16 - Top Left Isle
+     * 17 - Top Right Isle
+     * 18 - Bottom Right Isle
+     * 19 - Bottom Left Isle
+     *
+     * 20 - Start Tile
+     * 21 - End Tile
      */
     private void createTiles() {
         int id = 0;
@@ -110,7 +110,7 @@ public class TileHandler {
     }
 
     private BufferedImage getSprite(int x, int y) {
-        return atlas.getSubimage(x*32, y*32, 32, 32);
+        return atlas.getSubimage(x * 32, y * 32, 32, 32);
     }
 
     public BufferedImage getSprite(int id) {

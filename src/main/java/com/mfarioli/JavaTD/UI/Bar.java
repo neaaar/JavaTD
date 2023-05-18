@@ -10,7 +10,6 @@ public class Bar {
         this.y = y;
         this.width = width;
         this.height = height;
-
     }
 
     protected void drawButtonFeedback(Graphics g, CustomButton b) {

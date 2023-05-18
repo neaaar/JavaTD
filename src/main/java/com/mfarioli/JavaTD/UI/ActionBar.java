@@ -22,7 +22,6 @@ public class ActionBar extends Bar {
 
     private Tower selectedTower, displayedTower;
 
-
     public ActionBar(int x, int y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.playing = playing;
@@ -41,7 +40,7 @@ public class ActionBar extends Bar {
         int yStart = 650;
         int xOffset = (int) (w * 1.1f);
 
-        for(int i = 0; i < towerButtons.length; i++) {
+        for (int i = 0; i < towerButtons.length; i++) {
             towerButtons[i] = new CustomButton(i, "", xStart + i * xOffset, yStart, w, h);
         }
     }
@@ -49,7 +48,7 @@ public class ActionBar extends Bar {
     private void drawButtons(Graphics g) {
         bMenu.draw(g);
 
-        for(CustomButton b : towerButtons) {
+        for (CustomButton b : towerButtons) {
             //b.draw(g);
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(b.x, b.y, b.width, b.height);
@@ -72,10 +71,13 @@ public class ActionBar extends Bar {
         drawDisplayedTower(g);
     }
 
-    public void displayTower(Tower t) { displayedTower = t; }
+    public void displayTower(Tower t) {
+        displayedTower = t;
+    }
 
     private void drawDisplayedTower(Graphics g) {
-        if(displayedTower == null) return;
+        if (displayedTower == null)
+            return;
 
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(390, 650, 225, 60);
@@ -86,7 +88,7 @@ public class ActionBar extends Bar {
         g.drawImage(playing.getTowerHandler().getTowerImages()[displayedTower.getTowerType()], 400, 665, 30, 30, null);
         g.drawRect(395, 660, 40, 40);
 
-        g.setFont(new Font ("LucidaSans", Font.BOLD, 15));
+        g.setFont(new Font("LucidaSans", Font.BOLD, 15));
         g.drawString("" + Constants.TowerTypes.getTowerName(displayedTower.getTowerType()), 440, 670);
 
         drawDisplayedTowerBorder(g);
@@ -100,18 +102,15 @@ public class ActionBar extends Bar {
 
     private void drawDisplayedTowerRange(Graphics g) {
         g.setColor(Color.WHITE);
-        g.drawOval(displayedTower.getX() + 16 - (int)displayedTower.getRange(),
-                displayedTower.getY() + 16 -(int)displayedTower.getRange(),
-                (int)displayedTower.getRange() * 2,
-                (int)displayedTower.getRange() * 2);
+        g.drawOval(displayedTower.getX() + 16 - (int) displayedTower.getRange(), displayedTower.getY() + 16 - (int) displayedTower.getRange(), (int) displayedTower.getRange() * 2, (int) displayedTower.getRange() * 2);
     }
 
-        public void mouseClicked(int x, int y) {
+    public void mouseClicked(int x, int y) {
         if (bMenu.getBounds().contains(x, y)) {
             setGameState(MENU);
         } else {
-            for(CustomButton b : towerButtons) {
-                if(b.getBounds().contains(x, y)) {
+            for (CustomButton b : towerButtons) {
+                if (b.getBounds().contains(x, y)) {
                     selectedTower = new Tower(-1, 0, 0, b.getId());
                     playing.setSelectedTower(selectedTower);
                     return;
@@ -122,15 +121,15 @@ public class ActionBar extends Bar {
 
     public void mouseMoved(int x, int y) {
         bMenu.setMouseOver(false);
-        for(CustomButton b : towerButtons) {
+        for (CustomButton b : towerButtons) {
             b.setMouseOver(false);
         }
 
         if (bMenu.getBounds().contains(x, y)) {
             bMenu.setMouseOver(true);
         } else {
-            for(CustomButton b : towerButtons) {
-                if(b.getBounds().contains(x, y)) {
+            for (CustomButton b : towerButtons) {
+                if (b.getBounds().contains(x, y)) {
                     b.setMouseOver(true);
                 }
             }
@@ -138,15 +137,15 @@ public class ActionBar extends Bar {
     }
 
     public void mousePressed(int x, int y) {
-        for(CustomButton b : towerButtons) {
-            if(b.getBounds().contains(x, y)) {
+        for (CustomButton b : towerButtons) {
+            if (b.getBounds().contains(x, y)) {
                 b.setMousePressed(true);
             }
         }
     }
 
     public void mouseReleased(int x, int y) {
-        for(CustomButton b : towerButtons) {
+        for (CustomButton b : towerButtons) {
             b.resetBooleans();
         }
     }

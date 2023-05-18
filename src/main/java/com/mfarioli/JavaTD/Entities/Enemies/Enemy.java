@@ -3,6 +3,7 @@ package com.mfarioli.JavaTD.Entities.Enemies;
 import com.mfarioli.JavaTD.Helpers.Constants;
 
 import java.awt.*;
+
 import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.*;
 
@@ -84,7 +85,7 @@ public abstract class Enemy {
         this.id = id;
         this.x = x;
         this.y = y;
-        this.bounds = new Rectangle((int)x, (int)y, 32, 32);
+        this.bounds = new Rectangle((int) x, (int) y, 32, 32);
         this.enemyTipe = enemyTipe;
         lastDirection = -1; //starting direction
         setStartingHealth();
@@ -97,16 +98,17 @@ public abstract class Enemy {
     }
 
     public float getHealthBarFloat() {
-        return (float)health/maxhealth;
+        return (float) health / maxhealth;
     }
 
     public void hurt(int damage) {
         this.health -= damage;
-        if(health <= 0) alive = false;
+        if (health <= 0)
+            alive = false;
     }
 
     public void move(float speed, int direction) {
-        switch(direction) {
+        switch (direction) {
             case LEFT -> {
                 this.x -= speed;
                 break;
@@ -132,8 +134,8 @@ public abstract class Enemy {
     }
 
     private void updateHitbox() {
-        bounds.x = (int)x;
-        bounds.y = (int)y;
+        bounds.x = (int) x;
+        bounds.y = (int) y;
     }
 
     //only use this method for position fix

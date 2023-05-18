@@ -35,21 +35,20 @@ public class LoadSave {
         return image;
     }
 
-
     /*
-    * createLevel(String levelName, int[][] idArray)
-    * creates a .txt file called levelName.txt in the resources/levels folder
-    * levelName HAS to be in the levelN (where N is a positive number)
-    * since getLevelData  can only search for levels called levelN.
-    * idArray is the 2D array containing the level we want to store.
+     * createLevel(String levelName, int[][] idArray)
+     * creates a .txt file called levelName.txt in the resources/levels folder
+     * levelName HAS to be in the levelN (where N is a positive number)
+     * since getLevelData  can only search for levels called levelN.
+     * idArray is the 2D array containing the level we want to store.
      */
     public static void createLevel(String levelName, int[][] idArray, PathPoint start, PathPoint end) {
         File newLevel = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/" + levelName + ".txt");
-        if (!newLevel.getParentFile().exists())  {
+        if (!newLevel.getParentFile().exists()) {
             newLevel.getParentFile().mkdirs();
         }
 
-        if(newLevel.exists()) {
+        if (newLevel.exists()) {
             System.out.println("File with that name (" + levelName + ") already exists");
             return;
         }
@@ -67,8 +66,8 @@ public class LoadSave {
         try {
             PrintWriter printWriter = new PrintWriter(f);
 
-            for(int y = 0; y < idArray.length; y++) {
-                for(int x = 0; x < idArray[y].length; x++) {
+            for (int y = 0; y < idArray.length; y++) {
+                for (int x = 0; x < idArray[y].length; x++) {
                     printWriter.println(idArray[y][x]);
                 }
             }
@@ -85,17 +84,16 @@ public class LoadSave {
     }
 
     /*
-    * getLevelData(int n)
-    * loads a 2D int array with the data contained in a .txt file
-    * located in the resources/levels folder.
-    * n is the number of the level we want to load (files in the levels
-    * folder all have levelN names, where N is positive number)
+     * getLevelData(int n)
+     * loads a 2D int array with the data contained in a .txt file
+     * located in the resources/levels folder.
+     * n is the number of the level we want to load (files in the levels
+     * folder all have levelN names, where N is positive number)
      */
     public static int[][] getLevelData(int n) {
-        File levelFile = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/level" + n +
-                ".txt");
+        File levelFile = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/level" + n + ".txt");
 
-        if(!levelFile.exists()) {
+        if (!levelFile.exists()) {
             System.out.println("Level with that number doesn't exist");
             return null;
         }
@@ -110,7 +108,7 @@ public class LoadSave {
         try {
             Scanner sc = new Scanner(file);
 
-            while(sc.hasNextLine()) {
+            while (sc.hasNextLine()) {
                 list.add(Integer.parseInt(sc.nextLine()));
             }
         } catch (FileNotFoundException e) {
@@ -121,10 +119,9 @@ public class LoadSave {
     }
 
     public static ArrayList<PathPoint> getLevelPathPoints(int n) {
-        File levelFile = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/level" + n +
-                ".txt");
+        File levelFile = new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/levels/level" + n + ".txt");
 
-        if(!levelFile.exists()) {
+        if (!levelFile.exists()) {
             System.out.println("Level with that number doesn't exist");
             return null;
         }

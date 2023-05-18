@@ -13,10 +13,11 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
     public CustomMouseListener(Game game) {
         this.game = game;
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(e.getButton() == MouseEvent.BUTTON1) {
-            switch(GameStates.gameState) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            switch (GameStates.gameState) {
                 case MENU -> {
                     game.getMenu().mouseClicked(e.getX(), e.getY());
                     break;
@@ -37,7 +38,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        switch(GameStates.gameState) {
+        switch (GameStates.gameState) {
             case MENU -> {
 
                 break;
@@ -57,7 +58,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        switch(GameStates.gameState) {
+        switch (GameStates.gameState) {
             case MENU -> {
 
                 break;
@@ -92,7 +93,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        switch(GameStates.gameState) {
+        switch (GameStates.gameState) {
             case MENU -> {
                 game.getMenu().mouseMoved(e.getX(), e.getY());
                 break;

@@ -20,7 +20,7 @@ public class CustomKeyListener implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(GameStates.gameState == GameStates.PLAYING) {
+        if (GameStates.gameState == GameStates.PLAYING) {
             game.getPlaying().keyPressed(e);
         }
     }

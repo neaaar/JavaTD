@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.GRASS_TILE;
 import static com.mfarioli.JavaTD.Helpers.LevelBuilder.obsoleteGetLevelData;
 
-public class Playing extends SuperScene implements SceneInterface{
+public class Playing extends SuperScene implements SceneInterface {
     private int[][] level;
 
     private TileHandler tileHandler;
@@ -45,7 +45,7 @@ public class Playing extends SuperScene implements SceneInterface{
 
     private int mouseX, mouseY;
 
-    private PathPoint start,end;
+    private PathPoint start, end;
 
     public TowerHandler getTowerHandler() {
         return this.towerHandler;
@@ -71,22 +71,22 @@ public class Playing extends SuperScene implements SceneInterface{
     }
 
     /*
-    * the render method for the playing scene uses the 2D array from LevelBuilder
-    * and passes the value of each element of the array to a tileHandler that then
-    * gets the sprite associated to that element of the array (used as an ID for the getSprite method)
-    * and finally that sprite is drawn on the JPanel through the drawImage method
-    */
+     * the render method for the playing scene uses the 2D array from LevelBuilder
+     * and passes the value of each element of the array to a tileHandler that then
+     * gets the sprite associated to that element of the array (used as an ID for the getSprite method)
+     * and finally that sprite is drawn on the JPanel through the drawImage method
+     */
     @Override
     public void render(Graphics g) {
         updateTick();
 
-        for(int y = 0; y < level.length; y++) {
-            for(int x = 0; x < level[y].length; x++) {
+        for (int y = 0; y < level.length; y++) {
+            for (int x = 0; x < level[y].length; x++) {
                 int id = level[y][x];
-                if(isAnimation(id)) {
-                    g.drawImage(tileHandler.getAniSprite(id, animationIndex), x*32, y*32, null);
+                if (isAnimation(id)) {
+                    g.drawImage(tileHandler.getAniSprite(id, animationIndex), x * 32, y * 32, null);
                 } else {
-                    g.drawImage(tileHandler.getSprite(id), x*32, y*32, null);
+                    g.drawImage(tileHandler.getSprite(id), x * 32, y * 32, null);
                 }
             }
         }
@@ -107,7 +107,7 @@ public class Playing extends SuperScene implements SceneInterface{
         if (tick >= 24) {
             tick = 0;
             animationIndex++;
-            if(animationIndex >= 4) {
+            if (animationIndex >= 4) {
                 animationIndex = 0;
             }
         }
@@ -135,14 +135,15 @@ public class Playing extends SuperScene implements SceneInterface{
     }
 
     private void drawSelectedTower(Graphics g) {
-        if(selectedTower == null) return;
+        if (selectedTower == null)
+            return;
         g.drawImage(towerHandler.getTowerImages()[selectedTower.getTowerType()], mouseX, mouseY, null);
     }
 
     public int getTileType(int x, int y) {
         int xCord = x / 32;
         int yCord = y / 32;
-        if(xCord < 0 || xCord > 19 || yCord < 0 || yCord > 19) {
+        if (xCord < 0 || xCord > 19 || yCord < 0 || yCord > 19) {
             return 0; //if out of bounds return water tile
         }
         int id = level[yCord][xCord];
@@ -169,32 +170,35 @@ public class Playing extends SuperScene implements SceneInterface{
     }
 
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             selectedTower = null;
         }
     }
 
     @Override
     public void mouseClicked(int x, int y) {
-        if(y >= 640) {
+        if (y >= 640) {
             actionBar.mouseClicked(x, y);
         } else {
-            if(selectedTower == null) displayInfo(mouseX, mouseY);
-            if(!isTileGrass(mouseX, mouseY)) return;
-            if(checkTowerAt(mouseX, mouseY) != null) return;
+            if (selectedTower == null)
+                displayInfo(mouseX, mouseY);
+            if (!isTileGrass(mouseX, mouseY))
+                return;
+            if (checkTowerAt(mouseX, mouseY) != null)
+                return;
 
             towerHandler.addTower(selectedTower, mouseX, mouseY);
             selectedTower = null;
         }
 
-        if(bMenu.getBounds().contains(x, y)) {
+        if (bMenu.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.MENU);
         }
     }
 
     @Override
     public void mouseMoved(int x, int y) {
-        if(y >= 640) {
+        if (y >= 640) {
             actionBar.mouseMoved(x, y);
         } else {
             mouseX = (x / 32) * 32;
@@ -202,7 +206,7 @@ public class Playing extends SuperScene implements SceneInterface{
         }
 
         bMenu.setMouseOver(false);
-        if(bMenu.getBounds().contains(x, y)) {
+        if (bMenu.getBounds().contains(x, y)) {
             bMenu.setMouseOver(true);
         }
     }

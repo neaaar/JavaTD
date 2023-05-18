@@ -22,7 +22,8 @@ public class CustomButton {
     }
 
     public boolean isMouseOver() {
-        if(mouseOver) return true;
+        if (mouseOver)
+            return true;
         return false;
     }
 
@@ -62,7 +63,7 @@ public class CustomButton {
 
     public void resetBooleans() {
         this.mouseOver = false;
-        this. mousePressed = false;
+        this.mousePressed = false;
     }
 
     public void draw(Graphics g) {
@@ -75,7 +76,7 @@ public class CustomButton {
     }
 
     private void drawBody(Graphics g) {
-        if(mouseOver) {
+        if (mouseOver) {
             g.setColor(new Color(20, 60, 200, 196));
         } else {
             g.setColor(new Color(20, 60, 200, 128));
@@ -92,7 +93,6 @@ public class CustomButton {
             g.drawRect(x + 1, y + 1, width - 2, height - 2);
             g.drawRect(x + 2, y + 2, width - 4, height - 4);
         }
-
     }
 
     private void drawText(Graphics g) {

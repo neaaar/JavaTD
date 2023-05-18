@@ -39,47 +39,47 @@ public class ProjectileHandler {
     private void loadProjectileImages() {
         BufferedImage atlas = LoadSave.getSpriteAtlas();
 
-        for(int i = 0; i < projectileImages.length; i++) {
-            projectileImages[i] = atlas.getSubimage((7 + i)*32, 1*32, 32, 32);
+        for (int i = 0; i < projectileImages.length; i++) {
+            projectileImages[i] = atlas.getSubimage((7 + i) * 32, 1 * 32, 32, 32);
         }
 
         loadExplosionImages(atlas);
     }
 
     private void loadExplosionImages(BufferedImage atlas) {
-        for(int i = 0; i < explosionImages.length; i++) {
-            explosionImages[i] = atlas.getSubimage(i*32, 2*32, 32, 32);
+        for (int i = 0; i < explosionImages.length; i++) {
+            explosionImages[i] = atlas.getSubimage(i * 32, 2 * 32, 32, 32);
         }
     }
 
     public void newProjectile(Tower t, Enemy e) {
         int projectileType = getProjectileType(t);
-        int xDist = (int)(t.getX() - e.getX());
-        int yDist = (int)(t.getY() - e.getY());
+        int xDist = (int) (t.getX() - e.getX());
+        int yDist = (int) (t.getY() - e.getY());
         int totDist = Math.abs(xDist) + Math.abs(yDist);
 
         float xPercent = (float) Math.abs(xDist) / totDist;
 
-        float xSpeed = xPercent*Constants.Projectiles.getSpeed(projectileType);
+        float xSpeed = xPercent * Constants.Projectiles.getSpeed(projectileType);
         float ySpeed = Constants.Projectiles.getSpeed(projectileType) - xSpeed;
 
-        if(t.getX() > e.getX()) {
+        if (t.getX() > e.getX()) {
             xSpeed *= -1;
         }
 
-        if(t.getY() > e.getY()) {
+        if (t.getY() > e.getY()) {
             ySpeed *= -1;
         }
 
         float rotation = 0;
 
-        if(projectileType == ARROW) {
+        if (projectileType == ARROW) {
             //if the projectile is an arrow, calculates the value for the rotation
             float arcValue = (float) Math.atan((float) yDist / xDist);
             rotation = (float) Math.toDegrees(arcValue);
         }
 
-        if(xDist < 0) {
+        if (xDist < 0) {
             rotation += 180;
         }
 
@@ -87,7 +87,7 @@ public class ProjectileHandler {
     }
 
     private int getProjectileType(Tower t) {
-        switch(t.getTowerType()) {
+        switch (t.getTowerType()) {
             case CANNON -> {
                 return BOMB;
             }
@@ -105,8 +105,8 @@ public class ProjectileHandler {
     }
 
     private boolean isProjectileHittingEnemy(Projectile p) {
-        for(Enemy e : playing.getEnemyHandler().getEnemies()) {
-            if(e.getBounds().contains(p.getPosition())) {
+        for (Enemy e : playing.getEnemyHandler().getEnemies()) {
+            if (e.getBounds().contains(p.getPosition())) {
                 e.hurt(p.getDamage());
                 return true;
             }
@@ -127,13 +127,14 @@ public class ProjectileHandler {
         public int getExplosionIndex() {
             return explosionIndex;
         }
+
         public Explosion(Point2D.Float position) {
             this.position = position;
         }
 
         public void update() {
             explosionTick++;
-            if(explosionTick >= 12) {
+            if (explosionTick >= 12) {
                 explosionTick = 0;
                 explosionIndex++;
             }
@@ -141,8 +142,9 @@ public class ProjectileHandler {
     }
 
     private void explodeOnEnemy(Projectile p) {
-        for(Enemy e : playing.getEnemyHandler().getEnemies()) {
-            if(!e.isAlive()) continue; //if enemy isn't alive, continue
+        for (Enemy e : playing.getEnemyHandler().getEnemies()) {
+            if (!e.isAlive())
+                continue; //if enemy isn't alive, continue
             float radius = 40.0f;
 
             float xDist = Math.abs(p.getPosition().x - e.getX());
@@ -150,21 +152,24 @@ public class ProjectileHandler {
 
             float hypot = (float) Math.hypot(xDist, yDist);
 
-            if(!(hypot <= radius)) continue;
+            if (!(hypot <= radius))
+                continue;
             e.hurt(p.getDamage());
         }
     }
 
     public void update() {
-        for(Projectile p : projectiles) {
-            if(!p.isActive()) continue; //if current projectile isn't active continue to next projectile
+        for (Projectile p : projectiles) {
+            if (!p.isActive())
+                continue; //if current projectile isn't active continue to next projectile
 
             //projectiles can move before hitting an enemy
             p.move();
 
-            if(!isProjectileHittingEnemy(p)) continue; //if after moving the projectile doesn't hit an enemy continue
+            if (!isProjectileHittingEnemy(p))
+                continue; //if after moving the projectile doesn't hit an enemy continue
             p.setActive(false); //if current projectile hit an enemy, disable it
-            if(p.getProjectileType() == BOMB) {
+            if (p.getProjectileType() == BOMB) {
                 //if the projectile that just hit an enemy was a bomb, we need to draw the explosion
                 //we can't draw it in the update method, so we just set a boolean to true and draw it in the draw method
                 explosions.add(new Explosion(p.getPosition()));
@@ -174,8 +179,9 @@ public class ProjectileHandler {
             }
         }
 
-        for(Explosion e : explosions) {
-            if(!(e.getExplosionIndex() < 7)) continue;
+        for (Explosion e : explosions) {
+            if (!(e.getExplosionIndex() < 7))
+                continue;
             e.update();
         }
     }
@@ -183,10 +189,11 @@ public class ProjectileHandler {
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        for(Projectile p : projectiles) {
-            if(!p.isActive()) continue;
+        for (Projectile p : projectiles) {
+            if (!p.isActive())
+                continue;
 
-            if(p.getProjectileType() == ARROW) {
+            if (p.getProjectileType() == ARROW) {
                 //if the projectile is an arrow:
                 //sets the center of the rotation on the projectile, then rotates and draws it
                 g2d.translate(p.getPosition().x, p.getPosition().y);
@@ -198,19 +205,19 @@ public class ProjectileHandler {
                 //now we need to backtrace to get back to the values we had before translating/rotating
                 g2d.rotate(Math.toRadians(-p.getRotation()));
                 g2d.translate(-p.getPosition().x, -p.getPosition().y);
-            } else if(p.getProjectileType() == BOMB){
+            } else if (p.getProjectileType() == BOMB) {
                 //if the projectile isn't an arrow, just draw it normally
-                g2d.drawImage(projectileImages[p.getProjectileType()], (int)p.getPosition().x -32, (int)p.getPosition().y -16, null);
+                g2d.drawImage(projectileImages[p.getProjectileType()], (int) p.getPosition().x - 32, (int) p.getPosition().y - 16, null);
                 //x is p.getPosition() -32 so the bomb spawns from the opening of the cannon
-            } else if(p.getProjectileType() == CHAINS){
+            } else if (p.getProjectileType() == CHAINS) {
                 //if the projectile isn't a bomb, just draw it normally
-                g2d.drawImage(projectileImages[p.getProjectileType()], (int)p.getPosition().x -16, (int)p.getPosition().y -16, null);
+                g2d.drawImage(projectileImages[p.getProjectileType()], (int) p.getPosition().x - 16, (int) p.getPosition().y - 16, null);
             }
 
             //draw explosions
-            for(Explosion e : explosions) {
-                if(e.getExplosionIndex() < 7) {
-                    g2d.drawImage(explosionImages[e.getExplosionIndex()], (int)e.getPosition().x -16, (int)e.getPosition().y -16, null);
+            for (Explosion e : explosions) {
+                if (e.getExplosionIndex() < 7) {
+                    g2d.drawImage(explosionImages[e.getExplosionIndex()], (int) e.getPosition().x - 16, (int) e.getPosition().y - 16, null);
                 }
             }
         }

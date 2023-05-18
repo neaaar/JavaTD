@@ -16,7 +16,7 @@ public class GameRender {
     }
 
     public void render(Graphics g) {
-        switch(GameStates.gameState) {
+        switch (GameStates.gameState) {
             case MENU -> {
                 game.getMenu().render(g);
                 break;

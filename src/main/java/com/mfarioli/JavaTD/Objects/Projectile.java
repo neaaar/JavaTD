@@ -11,7 +11,6 @@ public class Projectile {
 
     private float xSpeed, ySpeed;
 
-
     private int projectileType, damage;
 
     private boolean active;

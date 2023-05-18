@@ -14,7 +14,7 @@ public class Constants {
         public static final int WOLF = 3;
 
         public static float getSpeed(int enemyType) {
-            switch(enemyType) {
+            switch (enemyType) {
                 case ORC -> {
                     return 0.5f;
                 }
@@ -36,7 +36,7 @@ public class Constants {
         }
 
         public static int getStartingHealth(int enemyTipe) {
-            switch(enemyTipe) {
+            switch (enemyTipe) {
                 case ORC -> {
                     return 100;
                 }
@@ -149,7 +149,7 @@ public class Constants {
         public static final int BOMB = 2;
 
         public static float getSpeed(int projectileType) {
-            switch(projectileType) {
+            switch (projectileType) {
                 case ARROW -> {
                     return 8f;
                 }

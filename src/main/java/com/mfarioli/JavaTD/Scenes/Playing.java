@@ -1,6 +1,7 @@
 package com.mfarioli.JavaTD.Scenes;
 
 import com.mfarioli.JavaTD.Entities.Allies.Tower;
+import com.mfarioli.JavaTD.Entities.Enemies.Enemy;
 import com.mfarioli.JavaTD.Game;
 import com.mfarioli.JavaTD.GameStates;
 import com.mfarioli.JavaTD.Handlers.EnemyHandler;
@@ -45,6 +46,10 @@ public class Playing extends SuperScene implements SceneInterface{
 
     public TowerHandler getTowerHandler() {
         return this.towerHandler;
+    }
+
+    public EnemyHandler getEnemyHandler() {
+        return enemyHandler;
     }
 
     public Playing(Game game) {

@@ -24,6 +24,10 @@ public class EnemyHandler {
 
     private PathPoint start, end;
 
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
     public EnemyHandler(Playing playing, PathPoint start, PathPoint end) {
         this.playing = playing;
         this.start = start;
@@ -76,6 +80,7 @@ public class EnemyHandler {
 
     public void update() {
         for(Enemy e : enemies) {
+            if(!e.isAlive()) continue; //if enemy isn't alive don't update it
             //pathfinding: given enemy pos and direction, is next tile a road tile? if yes, move there
             updateEnemyMovement(e);
         }
@@ -183,6 +188,7 @@ public class EnemyHandler {
 
     public void draw(Graphics g) {
         for(Enemy e : enemies) {
+            if(!e.isAlive()) continue; //if enemy isn't alive don't draw it
             drawEnemy(e, g);
             drawEnemyHealthBar(e, g);
         }

@@ -18,6 +18,8 @@ public abstract class Enemy {
 
     protected int lastDirection;
 
+    protected boolean alive;
+
     public int getId() {
         return id;
     }
@@ -74,6 +76,10 @@ public abstract class Enemy {
         this.lastDirection = lastDirection;
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
     public Enemy(int id, float x, float y, int enemyTipe) {
         this.id = id;
         this.x = x;
@@ -82,6 +88,7 @@ public abstract class Enemy {
         this.enemyTipe = enemyTipe;
         lastDirection = -1; //starting direction
         setStartingHealth();
+        alive = true;
     }
 
     private void setStartingHealth() {
@@ -91,6 +98,11 @@ public abstract class Enemy {
 
     public float getHealthBarFloat() {
         return (float)health/maxhealth;
+    }
+
+    public void hurt(int damage) {
+        this.health -= damage;
+        if(health <= 0) alive = false;
     }
 
     public void move(float speed, int direction) {

@@ -1,7 +1,9 @@
 package com.mfarioli.JavaTD.Handlers;
 
 import com.mfarioli.JavaTD.Entities.Allies.Tower;
+import com.mfarioli.JavaTD.Entities.Enemies.Enemy;
 import com.mfarioli.JavaTD.Helpers.LoadSave;
+import com.mfarioli.JavaTD.Helpers.Utilities;
 import com.mfarioli.JavaTD.Scenes.Playing;
 
 import java.awt.*;
@@ -61,8 +63,21 @@ public class TowerHandler {
     }
 
     public void update() {
-
+        for(Tower t : towers) {
+            attackEnemyIfInRange(t);
+        }
     }
 
+    private void attackEnemyIfInRange(Tower t) {
+        for(Enemy e : playing.getEnemyHandler().getEnemies()) {
+            if(!e.isAlive()) continue; //if enemy isn't alive return
+            if(!IsEnemyInRange(t,e)) continue; //if enemy not in range do nothing
+            e.hurt(5);
+        }
+    }
 
+    private boolean IsEnemyInRange(Tower t, Enemy e) {
+        int distance = Utilities.getHypotDistance(t.getX(), t.getY(), e.getX(), e.getY());
+        return distance < t.getRange();
+    }
 }

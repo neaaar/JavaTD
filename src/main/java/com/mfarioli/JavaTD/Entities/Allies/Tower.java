@@ -4,9 +4,15 @@ import com.mfarioli.JavaTD.Helpers.Constants;
 
 public class Tower {
     private int id;
-    private int x, y, towerType;
+    private int x, y, towerType, damage;
 
-    private float damage, range, cooldown;
+    private float range, cooldown;
+
+    private float cooldownTick;
+    /*
+    * using a counter instead of System.nanotime() because otherwise
+    * System.nanotime() would mess things up after a game pause
+    */
 
     public int getId() {
         return id;
@@ -36,7 +42,7 @@ public class Tower {
         return towerType;
     }
 
-    public float getDamage() {
+    public int getDamage() {
         return damage;
     }
 
@@ -63,6 +69,10 @@ public class Tower {
         setDefaultCooldown();
     }
 
+    public void update() {
+        cooldownTick++;
+    }
+
     private void setDefaultDamage() {
         damage = Constants.TowerTypes.getStartingDamage(towerType);
     }
@@ -73,5 +83,13 @@ public class Tower {
 
     private void setDefaultCooldown() {
         cooldown = Constants.TowerTypes.getDefaultCooldown(towerType);
+    }
+
+    public boolean isCooldownOver() {
+        return cooldownTick >= cooldown;
+    }
+
+    public void resetCooldown() {
+        this.cooldownTick = 0;
     }
 }

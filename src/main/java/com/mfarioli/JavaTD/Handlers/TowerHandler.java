@@ -64,15 +64,20 @@ public class TowerHandler {
 
     public void update() {
         for(Tower t : towers) {
+            t.update();
             attackEnemyIfInRange(t);
         }
     }
 
     private void attackEnemyIfInRange(Tower t) {
         for(Enemy e : playing.getEnemyHandler().getEnemies()) {
-            if(!e.isAlive()) continue; //if enemy isn't alive return
-            if(!IsEnemyInRange(t,e)) continue; //if enemy not in range do nothing
-            e.hurt(5);
+            if(!e.isAlive()) continue; //if enemy isn't alive continue to next enemy
+            if(!IsEnemyInRange(t,e)) continue; //if enemy not in range continue to next enemy
+            if(!t.isCooldownOver()) continue; //if tower cooldown isn't over continue to next enemy
+
+            //all conditions satisfied, tower can shoot enemy
+            playing.shootEnemy(t, e);
+            t.resetCooldown();
         }
     }
 

@@ -128,6 +128,12 @@ public abstract class Enemy {
             }
         }
         lastDirection = direction;
+        updateHitbox();
+    }
+
+    private void updateHitbox() {
+        bounds.x = (int)x;
+        bounds.y = (int)y;
     }
 
     //only use this method for position fix

@@ -7,7 +7,9 @@ public class Projectile {
 
     private Point2D.Float position;
 
-    private int projectileType;
+    private float xSpeed, ySpeed;
+
+    private int projectileType, damage;
 
     private boolean active;
 
@@ -31,10 +33,9 @@ public class Projectile {
         return projectileType;
     }
 
-    public void setProjectileType(int projectileType) {
-        this.projectileType = projectileType;
+    public int getDamage() {
+        return damage;
     }
-
     public boolean isActive() {
         return active;
     }
@@ -43,15 +44,18 @@ public class Projectile {
         this.active = active;
     }
 
-    public Projectile(int id, float x, float y, int projectileType) {
+    public Projectile(int id, float x, float y, int damage, float xSpeed, float ySpeed, int projectileType) {
         this.id = id;
         position = new Point2D.Float(x, y);
+        this.damage = damage;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
         this.projectileType = projectileType;
         this.active = true;
     }
 
-    public void move(float x, float y) {
-        position.x += x;
-        position.y += y;
+    public void move() {
+        position.x += xSpeed;
+        position.y += ySpeed;
     }
 }

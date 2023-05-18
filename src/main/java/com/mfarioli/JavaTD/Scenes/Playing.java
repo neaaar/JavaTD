@@ -5,6 +5,7 @@ import com.mfarioli.JavaTD.Entities.Enemies.Enemy;
 import com.mfarioli.JavaTD.Game;
 import com.mfarioli.JavaTD.GameStates;
 import com.mfarioli.JavaTD.Handlers.EnemyHandler;
+import com.mfarioli.JavaTD.Handlers.ProjectileHandler;
 import com.mfarioli.JavaTD.Handlers.TileHandler;
 import com.mfarioli.JavaTD.Handlers.TowerHandler;
 import com.mfarioli.JavaTD.Helpers.LevelBuilder;
@@ -29,6 +30,8 @@ public class Playing extends SuperScene implements SceneInterface{
     private EnemyHandler enemyHandler;
 
     private TowerHandler towerHandler;
+
+    private ProjectileHandler projectileHandler;
 
     private Tower selectedTower;
 
@@ -64,6 +67,7 @@ public class Playing extends SuperScene implements SceneInterface{
         tileHandler = new TileHandler();
         enemyHandler = new EnemyHandler(this, start, end);
         towerHandler = new TowerHandler(this);
+        projectileHandler = new ProjectileHandler(this);
     }
 
     /*
@@ -91,6 +95,7 @@ public class Playing extends SuperScene implements SceneInterface{
 
         enemyHandler.draw(g);
         towerHandler.draw(g);
+        projectileHandler.draw(g);
         drawHighlight(g);
 
         drawSelectedTower(g);
@@ -118,6 +123,11 @@ public class Playing extends SuperScene implements SceneInterface{
     public void update() {
         enemyHandler.update();
         towerHandler.update();
+        projectileHandler.update();
+    }
+
+    public void shootEnemy(Tower t, Enemy e) {
+        projectileHandler.newProjectile(t, e);
     }
 
     public void setSelectedTower(Tower selectedTower) {
@@ -143,24 +153,6 @@ public class Playing extends SuperScene implements SceneInterface{
         return getGame().getTileHandler().isSpriteAnimation(spriteID);
     }
 
-    @Override
-    public void mouseClicked(int x, int y) {
-        if(y >= 640) {
-            actionBar.mouseClicked(x, y);
-        } else {
-            if(selectedTower == null) displayInfo(mouseX, mouseY);
-            if(!isTileGrass(mouseX, mouseY)) return;
-            if(checkTowerAt(mouseX, mouseY) != null) return;
-
-            towerHandler.addTower(selectedTower, mouseX, mouseY);
-            selectedTower = null;
-        }
-
-        if(bMenu.getBounds().contains(x, y)) {
-            GameStates.setGameState(GameStates.MENU);
-        }
-    }
-
     private void displayInfo(int x, int y) {
         Tower t = checkTowerAt(x, y);
         actionBar.displayTower(t);
@@ -179,6 +171,24 @@ public class Playing extends SuperScene implements SceneInterface{
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             selectedTower = null;
+        }
+    }
+
+    @Override
+    public void mouseClicked(int x, int y) {
+        if(y >= 640) {
+            actionBar.mouseClicked(x, y);
+        } else {
+            if(selectedTower == null) displayInfo(mouseX, mouseY);
+            if(!isTileGrass(mouseX, mouseY)) return;
+            if(checkTowerAt(mouseX, mouseY) != null) return;
+
+            towerHandler.addTower(selectedTower, mouseX, mouseY);
+            selectedTower = null;
+        }
+
+        if(bMenu.getBounds().contains(x, y)) {
+            GameStates.setGameState(GameStates.MENU);
         }
     }
 

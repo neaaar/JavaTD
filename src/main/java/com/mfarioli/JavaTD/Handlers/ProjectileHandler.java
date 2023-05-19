@@ -41,14 +41,14 @@ public class ProjectileHandler {
 
     public void newProjectile(Tower t, Enemy e) {
         int projectileType = getProjectileType(t);
-        int xDist = Math.abs((int)(t.getX() - e.getX()));
-        int yDist = Math.abs((int)(t.getY() - e.getY()));
-        int totDist = xDist + yDist;
+        int xDist = (int)(t.getX() - e.getX());
+        int yDist = (int)(t.getY() - e.getY());
+        int totDist = Math.abs(xDist) + Math.abs(yDist);
 
-        float xPercent = (float)xDist / totDist;
+        float xPercent = (float) Math.abs(xDist) / totDist;
 
         float xSpeed = xPercent*Constants.Projectiles.getSpeed(projectileType);
-        float ySpeed = (1.0f - xPercent)*Constants.Projectiles.getSpeed(projectileType);
+        float ySpeed = Constants.Projectiles.getSpeed(projectileType) - xSpeed;
 
         if(t.getX() > e.getX()) {
             xSpeed *= -1;
@@ -58,7 +58,15 @@ public class ProjectileHandler {
             ySpeed *= -1;
         }
 
-        projectiles.add(new Projectile(projectilesId++, t.getX() + 16, t.getY() + 16, t.getDamage(), xSpeed, ySpeed, projectileType));
+        //calculating the value for the rotation
+        float arcValue = (float) Math.atan((float)yDist / xDist);
+        float rotation = (float) Math.toDegrees(arcValue);
+
+        if(xDist < 0) {
+            rotation += 180;
+        }
+
+        projectiles.add(new Projectile(projectilesId++, t.getX() + 16, t.getY() + 16, t.getDamage(), rotation, xSpeed, ySpeed, projectileType));
     }
 
     private int getProjectileType(Tower t) {
@@ -102,9 +110,20 @@ public class ProjectileHandler {
      }
 
     public void draw(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
         for(Projectile p : projectiles) {
             if(!p.isActive()) continue;
-            g.drawImage(projectileImages[p.getProjectileType()], (int)p.getPosition().x, (int)p.getPosition().y, null);
+
+            //sets the center of the rotation on the projectile, then rotates and draws it
+            g2d.translate(p.getPosition().x, p.getPosition().y);
+            g2d.rotate(Math.toRadians(p.getRotation()));
+            //x and y parameters are set to -16 because the centre is set on the projectile
+            g2d.drawImage(projectileImages[p.getProjectileType()], -16, -16, null);
+
+            //now we need to backtrace to get back to the values we had before translating/rotating
+            g2d.rotate(Math.toRadians(-p.getRotation()));
+            g2d.translate(-p.getPosition().x, -p.getPosition().y);
         }
     }
 }

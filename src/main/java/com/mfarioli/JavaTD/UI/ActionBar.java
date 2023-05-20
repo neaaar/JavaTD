@@ -22,9 +22,12 @@ public class ActionBar extends Bar {
 
     private Tower selectedTower, displayedTower;
 
+    private DecimalFormat formatter;
+
     public ActionBar(int x, int y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.playing = playing;
+        this.formatter = new DecimalFormat("0.0");
 
         initButtons();
     }
@@ -69,6 +72,9 @@ public class ActionBar extends Bar {
 
         //Displayed tower
         drawDisplayedTower(g);
+
+        //Wave infos
+        drawWaveInfos(g);
     }
 
     public void displayTower(Tower t) {
@@ -103,6 +109,49 @@ public class ActionBar extends Bar {
     private void drawDisplayedTowerRange(Graphics g) {
         g.setColor(Color.WHITE);
         g.drawOval(displayedTower.getX() + 16 - (int) displayedTower.getRange(), displayedTower.getY() + 16 - (int) displayedTower.getRange(), (int) displayedTower.getRange() * 2, (int) displayedTower.getRange() * 2);
+    }
+
+    private void drawWaveInfos(Graphics g) {
+        g.setFont(new Font("LucidaSans", Font.BOLD, 15));
+        drawWaveTimerInfo(g);
+        drawEnemiesLeftInfo(g);
+        drawWavesLeftInfo(g);
+
+    }
+
+    private void drawWavesLeftInfo(Graphics g) {
+        int current = playing.getWaveHandler().getWaveIndex();
+        int size = playing.getWaveHandler().getWaves().size();
+
+        g.setColor(new Color(255, 255, 255, 128));
+        g.fillRect(537, 8, 94, 25);
+        g.setColor(Color.BLACK);
+        g.drawString("Waves: " + (current + 1) + "/" + size, 541, 25);
+
+    }
+
+    private void drawEnemiesLeftInfo(Graphics g) {
+        if(!playing.getWaveHandler().isWaveTimerStarted()) {
+            int killedEnemies = playing.getEnemyHandler().getDeadEnemiesAmount();
+            int remaining = playing.getWaveHandler().getWaves().get(playing.getWaveHandler().getWaveIndex()).getEnemyTypes().size();
+
+            g.setColor(new Color(255, 255, 255, 128));
+            g.fillRect(16, 8, 125, 25);
+            g.setColor(Color.BLACK);
+            g.drawString("Enemies: " + killedEnemies + "/" + remaining, 20, 25);
+        }
+    }
+
+    private void drawWaveTimerInfo(Graphics g) {
+        if (playing.getWaveHandler().isWaveTimerStarted()) {
+            float timeLeft = playing.getWaveHandler().getTimeLeft();
+            String formattedText = formatter.format(timeLeft);
+
+            g.setColor(new Color(255, 255, 255, 128));
+            g.fillRect(16, 8, 125, 25);
+            g.setColor(Color.BLACK);
+            g.drawString("Time Left: " + formattedText, 20, 25);
+        }
     }
 
     public void mouseClicked(int x, int y) {

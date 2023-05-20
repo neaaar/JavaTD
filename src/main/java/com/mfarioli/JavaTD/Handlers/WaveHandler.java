@@ -24,6 +24,10 @@ public class WaveHandler {
         return waves;
     }
 
+    public int getWaveIndex() {
+        return waveIndex;
+    }
+
     public WaveHandler(Playing playing) {
         this.playing = playing;
         enemySpawnTickLimit = 60 * 2; //a new enemy every 2 seconds, can be changed
@@ -37,6 +41,11 @@ public class WaveHandler {
     private void createWaves() {
         waves.add(new Wave(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 1))));
         waves.add(new Wave(new ArrayList<>(Arrays.asList(2, 0, 0, 0, 0, 1))));
+    }
+
+    public float getTimeLeft() {
+        float ticksLeft = waveTickLimit - waveTick;
+        return ticksLeft / 60.0f; //since there are 60 updates in a second, ticks / 60 returns seconds left
     }
 
     public boolean isTimeForNewEnemy() {
@@ -58,6 +67,10 @@ public class WaveHandler {
 
     public void startWaveTimer() {
         waveStartTimer = true;
+    }
+
+    public boolean isWaveTimerStarted() {
+        return waveStartTimer;
     }
 
     public boolean isWaveTimerOver() {

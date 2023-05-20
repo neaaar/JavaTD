@@ -87,6 +87,15 @@ public class EnemyHandler {
         }
     }
 
+    public int getDeadEnemiesAmount() {
+        int size = 0;
+        for(Enemy e : enemies) {
+            if(!e.isAlive()) size++;
+        }
+
+        return size;
+    }
+
     public void update() {
         for (Enemy e : enemies) {
             if (!e.isAlive())

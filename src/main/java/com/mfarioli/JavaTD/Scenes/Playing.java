@@ -94,14 +94,13 @@ public class Playing extends SuperScene implements SceneInterface {
                 }
             }
         }
-        //bMenu.draw(g);
         actionBar.draw(g);
 
         enemyHandler.draw(g);
         towerHandler.draw(g);
         projectileHandler.draw(g);
-        drawHighlight(g);
 
+        drawHighlight(g);
         drawSelectedTower(g);
     }
 

@@ -108,9 +108,17 @@ public class ProjectileHandler {
         for (Enemy e : playing.getEnemyHandler().getEnemies()) {
             if (e.getBounds().contains(p.getPosition())) {
                 e.hurt(p.getDamage());
+                if (p.getProjectileType() == CHAINS) {
+                    e.slow();
+                }
                 return true;
             }
         }
+        return false;
+    }
+
+    private boolean isProjectileOutOfBounds(Projectile p) {
+        if(p.getPosition().y > 640) return true;
         return false;
     }
 
@@ -134,7 +142,7 @@ public class ProjectileHandler {
 
         public void update() {
             explosionTick++;
-            if (explosionTick >= 12) {
+            if (explosionTick >= 6) {
                 explosionTick = 0;
                 explosionIndex++;
             }
@@ -165,13 +173,15 @@ public class ProjectileHandler {
 
             //projectiles can move before hitting an enemy
             p.move();
+            if(isProjectileOutOfBounds(p))
+                p.setActive(false);
 
             if (!isProjectileHittingEnemy(p))
                 continue; //if after moving the projectile doesn't hit an enemy continue
-            p.setActive(false); //if current projectile hit an enemy, disable it
+            p.setActive(false); //if current projectile hits an enemy, disable it
             if (p.getProjectileType() == BOMB) {
                 //if the projectile that just hit an enemy was a bomb, we need to draw the explosion
-                //we can't draw it in the update method, so we just set a boolean to true and draw it in the draw method
+                //we can't draw it in the update method, so we add to a list
                 explosions.add(new Explosion(p.getPosition()));
                 explodeOnEnemy(p);
             } else {
@@ -180,9 +190,9 @@ public class ProjectileHandler {
         }
 
         for (Explosion e : explosions) {
-            if (!(e.getExplosionIndex() < 7))
-                continue;
-            e.update();
+            if (e.getExplosionIndex() < 7) {
+                e.update();
+            }
         }
     }
 
@@ -215,6 +225,7 @@ public class ProjectileHandler {
             }
 
             //draw explosions
+            //they do not get drawn if bomb projectile speed is above 1.25, consider removing them
             for (Explosion e : explosions) {
                 if (e.getExplosionIndex() < 7) {
                     g2d.drawImage(explosionImages[e.getExplosionIndex()], (int) e.getPosition().x - 16, (int) e.getPosition().y - 16, null);

@@ -159,7 +159,7 @@ public class Constants {
                 }
 
                 case BOMB -> {
-                    return 4f;
+                    return 1.25f;
                 }
             }
 

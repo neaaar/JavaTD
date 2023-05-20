@@ -18,6 +18,8 @@ public class EnemyHandler {
 
     private BufferedImage[] enemyImages;
 
+    private BufferedImage slowImage;
+
     private ArrayList<Enemy> enemies;
 
     private int healthBarWidth;
@@ -34,6 +36,8 @@ public class EnemyHandler {
         this.end = end;
         enemyImages = new BufferedImage[4];
         loadEnemyImages();
+        slowImage = LoadSave.getSpriteAtlas().getSubimage(9*32, 2*32, 32, 32);
+
         healthBarWidth = 24;
 
         enemies = new ArrayList<>();
@@ -194,9 +198,9 @@ public class EnemyHandler {
                 continue; //if enemy isn't alive don't draw it
             drawEnemy(e, g);
             drawEnemyHealthBar(e, g);
+            drawEffects(e, g);
         }
     }
-
     private void drawEnemy(Enemy enemy, Graphics g) {
         g.drawImage(enemyImages[enemy.getEnemyTipe()], (int) enemy.getX(), (int) enemy.getY(), null);
     }
@@ -211,4 +215,12 @@ public class EnemyHandler {
     private int getNewBarWidth(Enemy e) {
         return (int) (healthBarWidth * e.getHealthBarFloat());
     }
+
+    private void drawEffects(Enemy e, Graphics g) {
+        if(e.isSlowed()) {
+            g.drawImage(slowImage, (int) e.getX(), (int) e.getY(), null);
+        }
+    }
+
 }
+

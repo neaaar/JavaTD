@@ -21,6 +21,8 @@ public abstract class Enemy {
 
     protected boolean alive;
 
+    protected int slowTick, slowTickLimit;
+
     public int getId() {
         return id;
     }
@@ -49,36 +51,20 @@ public abstract class Enemy {
         return bounds;
     }
 
-    public void setBounds(Rectangle bounds) {
-        this.bounds = bounds;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
     public int getEnemyTipe() {
         return enemyTipe;
-    }
-
-    public void setEnemyTipe(int enemyTipe) {
-        this.enemyTipe = enemyTipe;
     }
 
     public int getLastDirection() {
         return lastDirection;
     }
 
-    public void setLastDirection(int lastDirection) {
-        this.lastDirection = lastDirection;
-    }
-
     public boolean isAlive() {
         return alive;
+    }
+
+    public boolean isSlowed() {
+        return slowTick < slowTickLimit;
     }
 
     public Enemy(int id, float x, float y, int enemyTipe) {
@@ -90,6 +76,8 @@ public abstract class Enemy {
         lastDirection = -1; //starting direction
         setStartingHealth();
         alive = true;
+        slowTickLimit = 120;
+        slowTick = slowTickLimit;
     }
 
     private void setStartingHealth() {
@@ -107,7 +95,16 @@ public abstract class Enemy {
             alive = false;
     }
 
+    public void slow() {
+        slowTick = 0;
+    }
+
     public void move(float speed, int direction) {
+        if(slowTick < slowTickLimit) { //2 seconds of slow since there are 60 updates per second and slowTickLimit = 120
+            slowTick++;
+            speed *= 0.3;
+        }
+
         switch (direction) {
             case LEFT -> {
                 this.x -= speed;

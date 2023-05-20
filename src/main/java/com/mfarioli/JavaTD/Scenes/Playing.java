@@ -4,10 +4,7 @@ import com.mfarioli.JavaTD.Entities.Allies.Tower;
 import com.mfarioli.JavaTD.Entities.Enemies.Enemy;
 import com.mfarioli.JavaTD.Game;
 import com.mfarioli.JavaTD.GameStates;
-import com.mfarioli.JavaTD.Handlers.EnemyHandler;
-import com.mfarioli.JavaTD.Handlers.ProjectileHandler;
-import com.mfarioli.JavaTD.Handlers.TileHandler;
-import com.mfarioli.JavaTD.Handlers.TowerHandler;
+import com.mfarioli.JavaTD.Handlers.*;
 import com.mfarioli.JavaTD.Helpers.LevelBuilder;
 import com.mfarioli.JavaTD.Helpers.LoadSave;
 import com.mfarioli.JavaTD.Objects.PathPoint;
@@ -33,6 +30,8 @@ public class Playing extends SuperScene implements SceneInterface {
 
     private ProjectileHandler projectileHandler;
 
+    private WaveHandler waveHandler;
+
     private Tower selectedTower;
 
     private CustomButton bMenu;
@@ -55,6 +54,10 @@ public class Playing extends SuperScene implements SceneInterface {
         return enemyHandler;
     }
 
+    public WaveHandler getWaveHandler() {
+        return waveHandler;
+    }
+
     public Playing(Game game) {
         super(game);
         bMenu = new CustomButton("Menu", 5, 5, 60, 20);
@@ -68,6 +71,7 @@ public class Playing extends SuperScene implements SceneInterface {
         enemyHandler = new EnemyHandler(this, start, end);
         towerHandler = new TowerHandler(this);
         projectileHandler = new ProjectileHandler(this);
+        waveHandler = new WaveHandler(this);
     }
 
     /*

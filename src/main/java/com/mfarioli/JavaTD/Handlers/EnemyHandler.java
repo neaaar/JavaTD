@@ -41,10 +41,11 @@ public class EnemyHandler {
         healthBarWidth = 24;
 
         enemies = new ArrayList<>();
-        addEnemy(ORC);
+        //enemies are added to the list in the spawnEnemy() method
+/*        addEnemy(ORC);
         addEnemy(BAT);
         addEnemy(KNIGHT);
-        addEnemy(WOLF);
+        addEnemy(WOLF);*/
     }
 
     private void loadEnemyImages() {
@@ -83,6 +84,9 @@ public class EnemyHandler {
     }
 
     public void update() {
+        playing.getWaveHandler().update();
+        if(isEnemyCooldownOver()) spawnEnemy();
+
         for (Enemy e : enemies) {
             if (!e.isAlive())
                 continue; //if enemy isn't alive don't update it
@@ -190,6 +194,18 @@ public class EnemyHandler {
 
     private int getTileType(int x, int y) {
         return playing.getTileType(x, y);
+    }
+
+    private void spawnEnemy() {
+        addEnemy(playing.getWaveHandler().getNextEnemy());
+    }
+
+    private boolean isEnemyCooldownOver() {
+        if(!playing.getWaveHandler().isTimeForNewEnemy()) return false; //if not time for a new enemy, return false
+        if(!playing.getWaveHandler().isThereMoreEnemyInWave()) return false; //if no more enemies in wave, return false
+
+        //if both conditions are met
+        return true;
     }
 
     public void draw(Graphics g) {

@@ -89,6 +89,13 @@ public abstract class Enemy {
         return (float) health / maxhealth;
     }
 
+    public void kill() {
+        //this isn't needed if an enemy reaches health < 0 through the hurt() method,
+        //but it is needed to kill the enemy as soon as it reaches the end tile
+        health = 0;
+        alive = false;
+    }
+
     public void hurt(int damage) {
         this.health -= damage;
         if (health <= 0)

@@ -56,6 +56,10 @@ public class EnemyHandler {
         }
     }
 
+    public void spawnEnemy(int nextEnemy) {
+        addEnemy(nextEnemy);
+    }
+
     public void addEnemy(int enemyType) {
         int x = start.getxCord();
         int y = start.getyCord();
@@ -84,9 +88,6 @@ public class EnemyHandler {
     }
 
     public void update() {
-        playing.getWaveHandler().update();
-        if(isEnemyCooldownOver()) spawnEnemy();
-
         for (Enemy e : enemies) {
             if (!e.isAlive())
                 continue; //if enemy isn't alive don't update it
@@ -107,7 +108,8 @@ public class EnemyHandler {
             e.move(getSpeed(e.getEnemyTipe()), e.getLastDirection());
         } else if (isAtEnd(e)) {
             //e.kill(), takeOneLife()
-            System.out.println("Life lost");
+            e.kill();
+            System.out.println("Life lost!");
         } else {
             setNewDirectionAndMove(e);
         }
@@ -196,18 +198,6 @@ public class EnemyHandler {
         return playing.getTileType(x, y);
     }
 
-    private void spawnEnemy() {
-        addEnemy(playing.getWaveHandler().getNextEnemy());
-    }
-
-    private boolean isEnemyCooldownOver() {
-        if(!playing.getWaveHandler().isTimeForNewEnemy()) return false; //if not time for a new enemy, return false
-        if(!playing.getWaveHandler().isThereMoreEnemyInWave()) return false; //if no more enemies in wave, return false
-
-        //if both conditions are met
-        return true;
-    }
-
     public void draw(Graphics g) {
         for (Enemy e : enemies) {
             if (!e.isAlive())
@@ -237,6 +227,5 @@ public class EnemyHandler {
             g.drawImage(slowImage, (int) e.getX(), (int) e.getY(), null);
         }
     }
-
 }
 

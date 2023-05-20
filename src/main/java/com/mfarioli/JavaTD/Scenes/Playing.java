@@ -82,7 +82,7 @@ public class Playing extends SuperScene implements SceneInterface {
      */
     @Override
     public void render(Graphics g) {
-        updateTick();
+        //updateTick();
 
         for (int y = 0; y < level.length; y++) {
             for (int x = 0; x < level[y].length; x++) {
@@ -108,7 +108,7 @@ public class Playing extends SuperScene implements SceneInterface {
     private void updateTick() {
         tick++;
         //change tick >= x to change the animation speed, the lower the x the faster the animation
-        if (tick >= 24) {
+        if (tick >= 18) {
             tick = 0;
             animationIndex++;
             if (animationIndex >= 4) {
@@ -125,9 +125,55 @@ public class Playing extends SuperScene implements SceneInterface {
     }
 
     public void update() {
+        updateTick();
+
+        waveHandler.update();
+
+        if(areAllEnemiesDead()) {
+            if(waveHandler.isThereMoreWaves()) {
+                waveHandler.startWaveTimer();
+                //check timer
+                if(isWaveTimerOver()) {
+                    //increase wave index
+                    waveHandler.increaseWaveIndex();
+                    enemyHandler.getEnemies().clear();
+                    waveHandler.resetEnemyIndex();
+                }
+            }
+        }
+
+        if(isEnemyCooldownOver()) spawnEnemy();
+
         enemyHandler.update();
         towerHandler.update();
         projectileHandler.update();
+    }
+
+    private boolean areAllEnemiesDead() {
+        //if wave not over, return false
+        if(waveHandler.isThereMoreEnemyInWave()) return false;
+
+        for (Enemy e : enemyHandler.getEnemies()) {
+            if(e.isAlive()) return false;
+        }
+
+        return true;
+    }
+
+    private boolean isEnemyCooldownOver() {
+        if(!waveHandler.isTimeForNewEnemy()) return false; //if not time for a new enemy, return false
+        if(!waveHandler.isThereMoreEnemyInWave()) return false; //if no more enemies in wave, return false
+
+        //if both conditions are met
+        return true;
+    }
+
+    private boolean isWaveTimerOver() {
+        return waveHandler.isWaveTimerOver();
+    }
+
+    private void spawnEnemy() {
+        enemyHandler.spawnEnemy(waveHandler.getNextEnemy());
     }
 
     public void shootEnemy(Tower t, Enemy e) {

@@ -35,8 +35,8 @@ public class Constants {
             return 0;
         }
 
-        public static int getStartingHealth(int enemyTipe) {
-            switch (enemyTipe) {
+        public static int getStartingHealth(int enemyType) {
+            switch (enemyType) {
                 case ORC -> {
                     return 100;
                 }
@@ -51,6 +51,28 @@ public class Constants {
 
                 case WOLF -> {
                     return 75;
+                }
+            }
+
+            return 0;
+        }
+
+        public static int getGoldReward(int enemyType) {
+            switch (enemyType) {
+                case ORC -> {
+                    return 10;
+                }
+
+                case BAT -> {
+                    return 5;
+                }
+
+                case KNIGHT -> {
+                    return 25;
+                }
+
+                case WOLF -> {
+                    return 15;
                 }
             }
 
@@ -86,6 +108,24 @@ public class Constants {
             }
 
             return "";
+        }
+
+        public static int getTowerCost(int towerType) {
+            switch (towerType) {
+                case CANNON -> {
+                    return 70;
+                }
+
+                case ARCHER -> {
+                    return 30;
+                }
+
+                case WIZARD -> {
+                    return 45;
+                }
+            }
+
+            return 0;
         }
 
         public static int getStartingDamage(int towerType) {

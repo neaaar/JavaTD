@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.getGoldReward;
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.GRASS_TILE;
 import static com.mfarioli.JavaTD.Helpers.LevelBuilder.obsoleteGetLevelData;
 
@@ -40,7 +41,7 @@ public class Playing extends SuperScene implements SceneInterface {
 
     private int animationIndex;
 
-    private int tick;
+    private int tick, goldTick;
 
     private int mouseX, mouseY;
 
@@ -62,6 +63,7 @@ public class Playing extends SuperScene implements SceneInterface {
         super(game);
         bMenu = new CustomButton("Menu", 5, 5, 60, 20);
         actionBar = new ActionBar(0, 640, 640, 80, this);
+        goldTick = 0;
 
         //call this method once only for creating the .txt file, then just use getLevelData
         //this.createLevel();
@@ -125,8 +127,11 @@ public class Playing extends SuperScene implements SceneInterface {
 
     public void update() {
         updateTick();
-
         waveHandler.update();
+
+        //gold tick
+        goldTick++;
+        if(goldTick % (60 * 3) == 0) actionBar.addGold(1); //add 1 gold every 3 seconds
 
         if(areAllEnemiesDead()) {
             if(waveHandler.isThereMoreWaves()) {
@@ -189,6 +194,14 @@ public class Playing extends SuperScene implements SceneInterface {
         g.drawImage(towerHandler.getTowerImages()[selectedTower.getTowerType()], mouseX, mouseY, null);
     }
 
+    public void removeTower(Tower displayedTower) {
+        towerHandler.removeTower(displayedTower);
+    }
+
+    public void upgradeTower(Tower displayedTower) {
+        towerHandler.upgradeTower(displayedTower);
+    }
+
     public int getTileType(int x, int y) {
         int xCord = x / 32;
         int yCord = y / 32;
@@ -218,6 +231,10 @@ public class Playing extends SuperScene implements SceneInterface {
         return towerHandler.checkTowerAt(x, y);
     }
 
+    public void goldReward(int enemyType) {
+        actionBar.addGold(getGoldReward(enemyType));
+    }
+
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             selectedTower = null;
@@ -237,6 +254,7 @@ public class Playing extends SuperScene implements SceneInterface {
                 return;
 
             towerHandler.addTower(selectedTower, mouseX, mouseY);
+            actionBar.payForTowerType(selectedTower.getTowerType());
             selectedTower = null;
         }
 

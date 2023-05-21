@@ -45,6 +45,22 @@ public class TowerHandler {
         towers.add(new Tower(towerAmount++, xCord, yCord, selectedTower.getTowerType()));
     }
 
+    public void removeTower(Tower displayedTower) {
+        for(int i = 0; i < towers.size(); i++) {
+            if(towers.get(i).getId() == displayedTower.getId()) {
+                towers.remove(i);
+            }
+        }
+    }
+
+    public void upgradeTower(Tower displayedTower) {
+        for(Tower t : towers) {
+            if (t.getId() == displayedTower.getId()) {
+                t.upgradeTower();
+            }
+        }
+    }
+
     public Tower checkTowerAt(int x, int y) {
         for (Tower t : towers) {
             if (t.getX() == x && t.getY() == y) {
@@ -53,19 +69,6 @@ public class TowerHandler {
         }
 
         return null;
-    }
-
-    public void draw(Graphics g) {
-        for (Tower t : towers) {
-            g.drawImage(towerImages[t.getTowerType()], t.getX(), t.getY(), null);
-        }
-    }
-
-    public void update() {
-        for (Tower t : towers) {
-            t.update();
-            attackEnemyIfInRange(t);
-        }
     }
 
     private void attackEnemyIfInRange(Tower t) {
@@ -86,5 +89,18 @@ public class TowerHandler {
     private boolean IsEnemyInRange(Tower t, Enemy e) {
         int distance = Utilities.getHypotDistance(t.getX(), t.getY(), e.getX(), e.getY());
         return distance < t.getRange();
+    }
+
+    public void draw(Graphics g) {
+        for (Tower t : towers) {
+            g.drawImage(towerImages[t.getTowerType()], t.getX(), t.getY(), null);
+        }
+    }
+
+    public void update() {
+        for (Tower t : towers) {
+            t.update();
+            attackEnemyIfInRange(t);
+        }
     }
 }

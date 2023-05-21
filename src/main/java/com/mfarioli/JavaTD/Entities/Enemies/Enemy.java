@@ -1,11 +1,11 @@
 package com.mfarioli.JavaTD.Entities.Enemies;
 
+import com.mfarioli.JavaTD.Handlers.EnemyHandler;
 import com.mfarioli.JavaTD.Helpers.Constants;
 
 import java.awt.*;
 
 import static com.mfarioli.JavaTD.Helpers.Constants.Direction.*;
-import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.*;
 
 public abstract class Enemy {
     protected int id;
@@ -15,13 +15,15 @@ public abstract class Enemy {
 
     protected int health, maxhealth;
 
-    protected int enemyTipe;
+    protected int enemyType;
 
     protected int lastDirection;
 
     protected boolean alive;
 
     protected int slowTick, slowTickLimit;
+
+    protected EnemyHandler enemyHandler;
 
     public int getId() {
         return id;
@@ -51,8 +53,8 @@ public abstract class Enemy {
         return bounds;
     }
 
-    public int getEnemyTipe() {
-        return enemyTipe;
+    public int getEnemyType() {
+        return enemyType;
     }
 
     public int getLastDirection() {
@@ -67,21 +69,23 @@ public abstract class Enemy {
         return slowTick < slowTickLimit;
     }
 
-    public Enemy(int id, float x, float y, int enemyTipe) {
+    public Enemy(int id, float x, float y, int enemyType, EnemyHandler enemyHandler) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.bounds = new Rectangle((int) x, (int) y, 32, 32);
-        this.enemyTipe = enemyTipe;
+        this.enemyType = enemyType;
         lastDirection = -1; //starting direction
         setStartingHealth();
         alive = true;
         slowTickLimit = 120;
         slowTick = slowTickLimit;
+
+        this.enemyHandler = enemyHandler;
     }
 
     private void setStartingHealth() {
-        health = Constants.EnemyTypes.getStartingHealth(enemyTipe);
+        health = Constants.EnemyTypes.getStartingHealth(enemyType);
         maxhealth = health;
     }
 
@@ -98,8 +102,10 @@ public abstract class Enemy {
 
     public void hurt(int damage) {
         this.health -= damage;
-        if (health <= 0)
+        if (health <= 0) {
             alive = false;
+            enemyHandler.goldReward(enemyType);
+        }
     }
 
     public void slow() {

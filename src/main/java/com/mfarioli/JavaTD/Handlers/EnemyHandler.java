@@ -66,22 +66,22 @@ public class EnemyHandler {
 
         switch (enemyType) {
             case ORC -> {
-                enemies.add(new Orc(0, x, y));
+                enemies.add(new Orc(0, x, y, this));
                 break;
             }
 
             case BAT -> {
-                enemies.add(new Bat(0, x, y));
+                enemies.add(new Bat(0, x, y, this));
                 break;
             }
 
             case KNIGHT -> {
-                enemies.add(new Knight(0, x, y));
+                enemies.add(new Knight(0, x, y, this));
                 break;
             }
 
             case WOLF -> {
-                enemies.add(new Wolf(0, x, y));
+                enemies.add(new Wolf(0, x, y, this));
                 break;
             }
         }
@@ -94,6 +94,10 @@ public class EnemyHandler {
         }
 
         return size;
+    }
+
+    public void goldReward(int enemyType) {
+        playing.goldReward(enemyType);
     }
 
     public void update() {
@@ -110,11 +114,11 @@ public class EnemyHandler {
             setNewDirectionAndMove(e);
         }
 
-        int newX = (int) (e.getX() + getSpeedX(e.getLastDirection(), e.getEnemyTipe()));
-        int newY = (int) (e.getY() + getSpeedY(e.getLastDirection(), e.getEnemyTipe()));
+        int newX = (int) (e.getX() + getSpeedX(e.getLastDirection(), e.getEnemyType()));
+        int newY = (int) (e.getY() + getSpeedY(e.getLastDirection(), e.getEnemyType()));
 
         if (getTileType(newX, newY) == ROAD_TILE) {
-            e.move(getSpeed(e.getEnemyTipe()), e.getLastDirection());
+            e.move(getSpeed(e.getEnemyType()), e.getLastDirection());
         } else if (isAtEnd(e)) {
             //e.kill(), takeOneLife()
             e.kill();
@@ -135,20 +139,20 @@ public class EnemyHandler {
             return; //no movement if the enemy is at the end point
 
         if (direction == LEFT || direction == RIGHT) {
-            int newY = (int) (e.getY() + getSpeedY(UP, e.getEnemyTipe()));
+            int newY = (int) (e.getY() + getSpeedY(UP, e.getEnemyType()));
             if (getTileType((int) e.getX(), newY) == ROAD_TILE) {
-                e.move(getSpeed(e.getEnemyTipe()), UP);
+                e.move(getSpeed(e.getEnemyType()), UP);
             } else {
-                e.move(getSpeed(e.getEnemyTipe()), DOWN);
+                e.move(getSpeed(e.getEnemyType()), DOWN);
             }
         }
 
         if (direction == UP || direction == DOWN || direction == -1) {
-            int newX = (int) (e.getX() + getSpeedX(RIGHT, e.getEnemyTipe()));
+            int newX = (int) (e.getX() + getSpeedX(RIGHT, e.getEnemyType()));
             if (getTileType(newX, (int) e.getY()) == ROAD_TILE) {
-                e.move(getSpeed(e.getEnemyTipe()), RIGHT);
+                e.move(getSpeed(e.getEnemyType()), RIGHT);
             } else {
-                e.move(getSpeed(e.getEnemyTipe()), LEFT);
+                e.move(getSpeed(e.getEnemyType()), LEFT);
             }
         }
     }
@@ -217,7 +221,7 @@ public class EnemyHandler {
         }
     }
     private void drawEnemy(Enemy enemy, Graphics g) {
-        g.drawImage(enemyImages[enemy.getEnemyTipe()], (int) enemy.getX(), (int) enemy.getY(), null);
+        g.drawImage(enemyImages[enemy.getEnemyType()], (int) enemy.getX(), (int) enemy.getY(), null);
     }
 
     private void drawEnemyHealthBar(Enemy e, Graphics g) {

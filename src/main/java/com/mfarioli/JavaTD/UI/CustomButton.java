@@ -1,5 +1,7 @@
 package com.mfarioli.JavaTD.UI;
 
+import com.mfarioli.JavaTD.GameStates;
+
 import java.awt.*;
 
 public class CustomButton {
@@ -76,10 +78,23 @@ public class CustomButton {
     }
 
     private void drawBody(Graphics g) {
-        if (mouseOver) {
-            g.setColor(new Color(20, 60, 200, 196));
-        } else {
-            g.setColor(new Color(20, 60, 200, 128));
+        switch(GameStates.gameState) {
+            case MENU -> {
+                if (mouseOver) {
+                    g.setColor(new Color(20, 60, 200, 196));
+                } else {
+                    g.setColor(new Color(20, 60, 200, 128));
+                }
+                break;
+            }
+
+            case SETTINGS, PLAYING -> {
+                if (mouseOver) {
+                    g.setColor(Color.DARK_GRAY);
+                } else {
+                    g.setColor(Color.WHITE);
+                }
+            }
         }
 
         g.fillRect(x, y, width, height);

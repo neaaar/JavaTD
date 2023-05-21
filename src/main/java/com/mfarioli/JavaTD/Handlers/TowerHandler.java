@@ -103,4 +103,9 @@ public class TowerHandler {
             attackEnemyIfInRange(t);
         }
     }
+
+    public void reset() {
+        towers.clear();
+        towerAmount = 0;
+    }
 }

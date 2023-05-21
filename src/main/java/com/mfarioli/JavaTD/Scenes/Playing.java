@@ -46,6 +46,7 @@ public class Playing extends SuperScene implements SceneInterface {
     private int mouseX, mouseY;
 
     private PathPoint start, end;
+    private boolean isGamePaused;
 
     public TowerHandler getTowerHandler() {
         return this.towerHandler;
@@ -57,6 +58,14 @@ public class Playing extends SuperScene implements SceneInterface {
 
     public WaveHandler getWaveHandler() {
         return waveHandler;
+    }
+
+    public void setGamePaused(boolean gamePaused) {
+        isGamePaused = gamePaused;
+    }
+
+    public boolean isGamePaused() {
+        return isGamePaused;
     }
 
     public Playing(Game game) {
@@ -126,6 +135,8 @@ public class Playing extends SuperScene implements SceneInterface {
     }
 
     public void update() {
+        if(isGamePaused) return;
+
         updateTick();
         waveHandler.update();
 
@@ -235,6 +246,10 @@ public class Playing extends SuperScene implements SceneInterface {
         actionBar.addGold(getGoldReward(enemyType));
     }
 
+    public void removeOneLife() {
+        actionBar.removeOneLife();
+    }
+
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             selectedTower = null;
@@ -300,5 +315,21 @@ public class Playing extends SuperScene implements SceneInterface {
         end = pathPoints.get(1);
 
         return level;
+    }
+
+    public void resetEverything() {
+        actionBar.resetEverything();
+
+        enemyHandler.reset();
+        towerHandler.reset();
+        projectileHandler.reset();
+        waveHandler.reset();
+
+        mouseX = 0;
+        mouseY = 0;
+
+        isGamePaused = false;
+        selectedTower = null;
+        goldTick = 0;
     }
 }

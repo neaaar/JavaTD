@@ -32,6 +32,10 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
                     game.getPlaying().mouseClicked(e.getX(), e.getY());
                     break;
                 }
+
+                case GAME_OVER -> {
+                    game.getGameOver().mouseClicked(e.getX(), e.getY());
+                }
             }
         }
     }
@@ -39,13 +43,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         switch (GameStates.gameState) {
-            case MENU -> {
-
-                break;
-            }
-
-            case SETTINGS -> {
-
+            case MENU, GAME_OVER, SETTINGS -> {
                 break;
             }
 
@@ -59,13 +57,7 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
     @Override
     public void mouseReleased(MouseEvent e) {
         switch (GameStates.gameState) {
-            case MENU -> {
-
-                break;
-            }
-
-            case SETTINGS -> {
-
+            case MENU, SETTINGS -> {
                 break;
             }
 
@@ -107,6 +99,10 @@ public class CustomMouseListener implements MouseListener, MouseMotionListener {
             case PLAYING -> {
                 game.getPlaying().mouseMoved(e.getX(), e.getY());
                 break;
+            }
+
+            case GAME_OVER -> {
+                game.getGameOver().mouseMoved(e.getX(), e.getY());
             }
         }
     }

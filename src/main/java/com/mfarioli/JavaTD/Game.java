@@ -3,6 +3,7 @@ package com.mfarioli.JavaTD;
 import com.mfarioli.JavaTD.Handlers.TileHandler;
 import com.mfarioli.JavaTD.Inputs.CustomKeyListener;
 import com.mfarioli.JavaTD.Inputs.CustomMouseListener;
+import com.mfarioli.JavaTD.Scenes.GameOver;
 import com.mfarioli.JavaTD.Scenes.Menu;
 import com.mfarioli.JavaTD.Scenes.Playing;
 import com.mfarioli.JavaTD.Scenes.Settings;
@@ -26,6 +27,8 @@ public class Game extends JFrame implements Runnable {
     private Playing playing;
 
     private Settings settings;
+
+    private GameOver gameOver;
 
     private TileHandler tileHandler;
 
@@ -61,6 +64,10 @@ public class Game extends JFrame implements Runnable {
         this.settings = settings;
     }
 
+    public GameOver getGameOver() {
+        return gameOver;
+    }
+
     public TileHandler getTileHandler() {
         return tileHandler;
     }
@@ -79,6 +86,7 @@ public class Game extends JFrame implements Runnable {
         this.menu = new Menu(this);
         this.playing = new Playing(this);
         this.settings = new Settings(this);
+        this.gameOver = new GameOver(this);
         this.tileHandler = new TileHandler();
     }
 
@@ -92,6 +100,7 @@ public class Game extends JFrame implements Runnable {
         setLocation(400, 80);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        setTitle("JavaTD");
 
         pack(); //lets the windowManager create the panel given the values in JPanel
         setVisible(true);

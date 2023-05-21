@@ -120,9 +120,8 @@ public class EnemyHandler {
         if (getTileType(newX, newY) == ROAD_TILE) {
             e.move(getSpeed(e.getEnemyType()), e.getLastDirection());
         } else if (isAtEnd(e)) {
-            //e.kill(), takeOneLife()
             e.kill();
-            System.out.println("Life lost!");
+            playing.removeOneLife();
         } else {
             setNewDirectionAndMove(e);
         }
@@ -239,6 +238,10 @@ public class EnemyHandler {
         if(e.isSlowed()) {
             g.drawImage(slowImage, (int) e.getX(), (int) e.getY(), null);
         }
+    }
+
+    public void reset() {
+        enemies.clear();
     }
 }
 

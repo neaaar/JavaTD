@@ -118,8 +118,12 @@ public class ProjectileHandler {
     }
 
     private boolean isProjectileOutOfBounds(Projectile p) {
-        if(p.getPosition().y > 640) return true;
-        return false;
+        if(p.getPosition().x >= 0 && p.getPosition().x <= 640) {
+            if(p.getPosition().y >= 0 && p.getPosition().y <= 640) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //using an inner class since we don't need it anywhere else
@@ -232,5 +236,11 @@ public class ProjectileHandler {
                 }
             }
         }
+    }
+
+    public void reset() {
+        projectiles.clear();
+        explosions.clear();
+        projectilesId = 0;
     }
 }

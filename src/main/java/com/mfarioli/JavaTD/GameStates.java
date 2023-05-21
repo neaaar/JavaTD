@@ -1,7 +1,7 @@
 package com.mfarioli.JavaTD;
 
 public enum GameStates {
-    MENU, SETTINGS, PLAYING;
+    MENU, SETTINGS, PLAYING, GAME_OVER;
 
     public static GameStates gameState = MENU;
 

@@ -19,7 +19,7 @@ public class ActionBar extends Bar {
 
     private Playing playing;
 
-    private CustomButton bMenu, sellTower, upgradeTower;
+    private CustomButton bMenu, bPause, sellTower, upgradeTower;
 
     private CustomButton[] towerButtons;
 
@@ -27,21 +27,27 @@ public class ActionBar extends Bar {
 
     private DecimalFormat formatter;
 
-    private int gold, towerCostType;
+    private int gold, towerCostType, lives;
 
     private boolean showTowerCost;
+
+    public int getLives() {
+        return lives;
+    }
 
     public ActionBar(int x, int y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.playing = playing;
         this.formatter = new DecimalFormat("0.0");
         gold = 75;
+        lives = 5;
 
         initButtons();
     }
 
     private void initButtons() {
         bMenu = new CustomButton("Menu", 2, 642, 100, 30);
+        bPause = new CustomButton("Pause", 2, 675, 100, 30);
         sellTower = new CustomButton("Sell", 470, 680, 50, 25);
         upgradeTower = new CustomButton("Upgrade", 560, 680, 50, 25);
 
@@ -60,6 +66,7 @@ public class ActionBar extends Bar {
 
     private void drawButtons(Graphics g) {
         bMenu.draw(g);
+        //bPause.draw(g);
 
         for (CustomButton b : towerButtons) {
             //b.draw(g);
@@ -89,6 +96,9 @@ public class ActionBar extends Bar {
         //Gold info
         drawGoldAmount(g);
         drawTowerCost(g);
+
+        //Lives
+        drawLives(g);
     }
 
     public void displayTower(Tower t) {
@@ -110,7 +120,7 @@ public class ActionBar extends Bar {
 
         g.setFont(new Font("LucidaSans", Font.BOLD, 15));
         g.drawString("" + getTowerName(displayedTower.getTowerType()), 470, 670);
-        g.drawString("Tier: " + displayedTower.getTier(), 530, 670);
+        //g.drawString("Tier: " + displayedTower.getTier(), 530, 670);
 
         drawDisplayedTowerBorder(g);
         drawDisplayedTowerRange(g);
@@ -206,6 +216,15 @@ public class ActionBar extends Bar {
 
     }
 
+    private void drawLives(Graphics g) {
+        g.setFont(new Font("LucidaSans", Font.BOLD, 15));
+
+        g.setColor(new Color(255, 255, 255, 128));
+        g.fillRect(287, 8, 75, 25);
+        g.setColor(Color.BLACK);
+        g.drawString("Lives: " + lives, 290, 25);
+    }
+
     public void payForTowerType(int towerType) {
         gold -= getTowerCost(towerType);
     }
@@ -216,6 +235,13 @@ public class ActionBar extends Bar {
 
     public void addGold(int goldAmount) {
         gold += goldAmount;
+    }
+
+    public void removeOneLife() {
+        lives--;
+        if(lives <= 0) {
+            setGameState(GAME_OVER);
+        }
     }
 
     private void sellTowerClicked() {
@@ -245,9 +271,11 @@ public class ActionBar extends Bar {
 
     public void mouseClicked(int x, int y) {
         if (bMenu.getBounds().contains(x, y)) {
+            playing.resetEverything();
             setGameState(MENU);
+        } else if (bPause.getBounds().contains(x, y)) {
+            playing.setGamePaused(!playing.isGamePaused());
         } else {
-
             if(displayedTower != null) {
                 if(sellTower.getBounds().contains(x, y)) {
                     sellTowerClicked();
@@ -272,6 +300,7 @@ public class ActionBar extends Bar {
 
     public void mouseMoved(int x, int y) {
         bMenu.setMouseOver(false);
+        bPause.setMouseOver(false);
         sellTower.setMouseOver(false);
         upgradeTower.setMouseOver(false);
         showTowerCost = false;
@@ -282,8 +311,9 @@ public class ActionBar extends Bar {
 
         if (bMenu.getBounds().contains(x, y)) {
             bMenu.setMouseOver(true);
+        } else if (bPause.getBounds().contains(x, y)) {
+            bPause.setMouseOver(true);
         } else {
-
             if(displayedTower != null) {
                 if(sellTower.getBounds().contains(x, y)) {
                     sellTower.setMouseOver(true);
@@ -328,6 +358,15 @@ public class ActionBar extends Bar {
         for (CustomButton b : towerButtons) {
             b.resetBooleans();
         }
+    }
+
+    public void resetEverything() {
+        gold = 75;
+        lives = 5;
+        towerCostType = 0;
+        showTowerCost = false;
+        selectedTower = null;
+        displayedTower = null;
     }
 }
 

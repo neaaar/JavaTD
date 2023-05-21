@@ -79,7 +79,7 @@ public class CustomButton {
 
     private void drawBody(Graphics g) {
         switch(GameStates.gameState) {
-            case MENU -> {
+            case MENU, GAME_OVER -> {
                 if (mouseOver) {
                     g.setColor(new Color(20, 60, 200, 196));
                 } else {

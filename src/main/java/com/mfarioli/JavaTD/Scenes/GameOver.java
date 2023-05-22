@@ -30,9 +30,15 @@ public class GameOver extends SuperScene implements SceneInterface{
         bMenu.draw(g);
         bReplay.draw(g);
 
-        g.setFont(new Font("LucidaSans", Font.BOLD, 50));
-        g.setColor(Color.BLUE);
-        g.drawString("Game over", 180, 215);
+        if(game.getPlaying().getActionBar().getLives() <= 0) {
+            g.setFont(new Font("LucidaSans", Font.BOLD, 50));
+            g.setColor(Color.BLUE);
+            g.drawString("Game over", 180, 215);
+        } else {
+            g.setFont(new Font("LucidaSans", Font.BOLD, 50));
+            g.setColor(Color.BLUE);
+            g.drawString("You won!", 200, 215);
+        }
     }
 
     @Override

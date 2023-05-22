@@ -16,6 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import static com.mfarioli.JavaTD.GameStates.*;
 import static com.mfarioli.JavaTD.Helpers.Constants.EnemyTypes.getGoldReward;
 import static com.mfarioli.JavaTD.Helpers.Constants.Tiles.GRASS_TILE;
 import static com.mfarioli.JavaTD.Helpers.LevelBuilder.obsoleteGetLevelData;
@@ -60,6 +61,10 @@ public class Playing extends SuperScene implements SceneInterface {
         return waveHandler;
     }
 
+    public ActionBar getActionBar() {
+        return actionBar;
+    }
+
     public void setGamePaused(boolean gamePaused) {
         isGamePaused = gamePaused;
     }
@@ -75,7 +80,7 @@ public class Playing extends SuperScene implements SceneInterface {
         goldTick = 0;
 
         //call this method once only for creating the .txt file, then just use getLevelData
-        //this.createLevel();
+        this.createLevel();
         level = this.loadLevel(1);
 
         tileHandler = new TileHandler();
@@ -154,6 +159,8 @@ public class Playing extends SuperScene implements SceneInterface {
                     enemyHandler.getEnemies().clear();
                     waveHandler.resetEnemyIndex();
                 }
+            } else {
+                setGameState(GAME_OVER);
             }
         }
 
@@ -274,7 +281,7 @@ public class Playing extends SuperScene implements SceneInterface {
         }
 
         if (bMenu.getBounds().contains(x, y)) {
-            GameStates.setGameState(GameStates.MENU);
+            setGameState(GameStates.MENU);
         }
     }
 

@@ -101,6 +101,8 @@ public abstract class Enemy {
     }
 
     public void hurt(int damage) {
+        if(!isAlive()) return;
+
         this.health -= damage;
         if (health <= 0) {
             alive = false;

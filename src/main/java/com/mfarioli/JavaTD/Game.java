@@ -105,6 +105,7 @@ public class Game extends JFrame implements Runnable {
         pack(); //lets the windowManager create the panel given the values in JPanel
         setVisible(true);
 
+        //BackgroundMusic.start();
         gameScreen.initImputs();
     }
 

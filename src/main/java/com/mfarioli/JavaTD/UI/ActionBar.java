@@ -80,7 +80,7 @@ public class ActionBar extends Bar {
 
     public void draw(Graphics g) {
         //Background
-        g.setColor(new Color(220, 123, 15));
+        g.setColor(new Color(56, 129, 245));
         g.fillRect(x, y, width, height);
 
         //Buttons

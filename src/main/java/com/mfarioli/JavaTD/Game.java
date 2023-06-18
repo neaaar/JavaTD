@@ -1,6 +1,7 @@
 package com.mfarioli.JavaTD;
 
 import com.mfarioli.JavaTD.Handlers.TileHandler;
+import com.mfarioli.JavaTD.Helpers.AudioPlayer;
 import com.mfarioli.JavaTD.Inputs.CustomKeyListener;
 import com.mfarioli.JavaTD.Inputs.CustomMouseListener;
 import com.mfarioli.JavaTD.Scenes.GameOver;
@@ -32,20 +33,29 @@ public class Game extends JFrame implements Runnable {
 
     private TileHandler tileHandler;
 
+    private AudioPlayer backgroundMusicPlayer;
+
+    public Game() {
+        gameScreen = new GameScreen(this);
+        add(gameScreen);
+
+        gameThread = new Thread(this);
+
+        this.gameRender = new GameRender(this);
+        this.menu = new Menu(this);
+        this.playing = new Playing(this);
+        this.settings = new Settings(this);
+        this.gameOver = new GameOver(this);
+        this.tileHandler = new TileHandler();
+        //this.backgroundMusicPlayer = new AudioPlayer();
+    }
+
     public GameRender getGameRender() {
         return gameRender;
     }
 
-    public void setGameRender(GameRender gameRender) {
-        this.gameRender = gameRender;
-    }
-
     public Menu getMenu() {
         return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
     }
 
     public Playing getPlaying() {
@@ -60,10 +70,6 @@ public class Game extends JFrame implements Runnable {
         return settings;
     }
 
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
     public GameOver getGameOver() {
         return gameOver;
     }
@@ -72,22 +78,8 @@ public class Game extends JFrame implements Runnable {
         return tileHandler;
     }
 
-    public void setTileHandler(TileHandler tileHandler) {
-        this.tileHandler = tileHandler;
-    }
-
-    public Game() {
-        gameScreen = new GameScreen(this);
-        add(gameScreen);
-
-        gameThread = new Thread(this);
-
-        this.gameRender = new GameRender(this);
-        this.menu = new Menu(this);
-        this.playing = new Playing(this);
-        this.settings = new Settings(this);
-        this.gameOver = new GameOver(this);
-        this.tileHandler = new TileHandler();
+    public AudioPlayer getBackgroundMusicPlayer() {
+        return backgroundMusicPlayer;
     }
 
     public static void main(String[] args) {

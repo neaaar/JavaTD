@@ -37,6 +37,10 @@ public class Settings extends SuperScene implements SceneInterface {
     public void mouseClicked(int x, int y) {
         if (bMenu.getBounds().contains(x, y)) {
             GameStates.setGameState(GameStates.MENU);
+        } else if (bMusicOn.getBounds().contains(x, y)) {
+            getGame().getBackgroundMusicPlayer().start();
+        } else if (bMusicOff.getBounds().contains(x, y)) {
+            getGame().getBackgroundMusicPlayer().stop();
         }
     }
 

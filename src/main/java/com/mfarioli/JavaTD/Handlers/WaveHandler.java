@@ -38,9 +38,17 @@ public class WaveHandler {
         createWaves();
     }
 
+    /* For waves:
+        Orc = 0
+        Bat = 1
+        Knight = 2
+        Wolf = 3
+     */
     private void createWaves() {
-        waves.add(new Wave(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 1))));
-        waves.add(new Wave(new ArrayList<>(Arrays.asList(2, 0, 0, 0, 0, 1))));
+        waves.add(new Wave(new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 1, 0, 1, 0, 1))));
+        waves.add(new Wave(new ArrayList<>(Arrays.asList(3, 2, 1, 0, 1, 3, 2, 1, 0, 1))));
+        waves.add(new Wave(new ArrayList<>(Arrays.asList(2, 3, 3, 1, 1, 3, 3, 2, 0, 0))));
+        waves.add(new Wave(new ArrayList<>(Arrays.asList(1, 1, 1, 2, 3, 1, 1, 1, 2, 3))));
     }
 
     public float getTimeLeft() {

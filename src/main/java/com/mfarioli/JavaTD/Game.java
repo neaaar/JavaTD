@@ -12,6 +12,7 @@ import com.mfarioli.JavaTD.Scenes.Settings;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -47,7 +48,7 @@ public class Game extends JFrame implements Runnable {
         this.settings = new Settings(this);
         this.gameOver = new GameOver(this);
         this.tileHandler = new TileHandler();
-        //this.backgroundMusicPlayer = new AudioPlayer();
+        this.backgroundMusicPlayer = new AudioPlayer(new File("/Users/marco/IdeaProjects/JavaTD/src/main/resources/アークナイツ BGM - Dossoles Holiday Lobby Theme - short ver.wav"));
     }
 
     public GameRender getGameRender() {

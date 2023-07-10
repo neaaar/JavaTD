@@ -127,7 +127,7 @@ public class ProjectileHandler {
     }
 
     //using an inner class since we don't need it anywhere else
-    public class Explosion {
+    public static class Explosion {
         Point2D.Float position;
 
         private int explosionTick, explosionIndex;

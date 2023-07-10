@@ -15,6 +15,28 @@ public class CustomButton {
 
     private boolean mouseOver, mousePressed;
 
+    //for normal buttons
+    public CustomButton(String text, int x, int y, int width, int height) {
+        this.id = -1;
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        bounds = new Rectangle(x, y, width, height);
+    }
+
+    //for ActionBar buttons
+    public CustomButton(int id, String text, int x, int y, int width, int height) {
+        this.id = id;
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        bounds = new Rectangle(x, y, width, height);
+    }
+
     public int getId() {
         return id;
     }
@@ -39,28 +61,6 @@ public class CustomButton {
 
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    //for normal buttons
-    public CustomButton(String text, int x, int y, int width, int height) {
-        this.id = -1;
-        this.text = text;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        bounds = new Rectangle(x, y, width, height);
-    }
-
-    //for ActionBar buttons
-    public CustomButton(int id, String text, int x, int y, int width, int height) {
-        this.id = id;
-        this.text = text;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        bounds = new Rectangle(x, y, width, height);
     }
 
     public void resetBooleans() {

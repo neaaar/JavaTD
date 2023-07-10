@@ -42,10 +42,6 @@ public class EnemyHandler {
 
         enemies = new ArrayList<>();
         //enemies are added to the list in the spawnEnemy() method
-/*        addEnemy(ORC);
-        addEnemy(BAT);
-        addEnemy(KNIGHT);
-        addEnemy(WOLF);*/
     }
 
     private void loadEnemyImages() {

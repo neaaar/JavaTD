@@ -24,7 +24,7 @@ public class AudioPlayer {
             info = new DataLine.Info(Clip.class, audioFormat);
             audioClip = (Clip) AudioSystem.getLine(info);
             audioClip.open(audioInputStream);
-            this.start();
+            //this.start();
         } catch (UnsupportedAudioFileException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

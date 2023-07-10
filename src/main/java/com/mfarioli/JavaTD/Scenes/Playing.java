@@ -80,7 +80,7 @@ public class Playing extends SuperScene implements SceneInterface {
         goldTick = 0;
 
         //call this method once only for creating the .txt file, then just use getLevelData
-        this.createLevel();
+        //this.createLevel();
         level = this.loadLevel(1);
 
         tileHandler = new TileHandler();
@@ -160,7 +160,7 @@ public class Playing extends SuperScene implements SceneInterface {
                     waveHandler.resetEnemyIndex();
                 }
             } else {
-                setGameState(GAME_OVER);
+                setGameState(GAME_OVER); //victory screen
             }
         }
 

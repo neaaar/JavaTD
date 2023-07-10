@@ -31,9 +31,7 @@ public class ActionBar extends Bar {
 
     private boolean showTowerCost;
 
-    public int getLives() {
-        return lives;
-    }
+
 
     public ActionBar(int x, int y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -45,6 +43,9 @@ public class ActionBar extends Bar {
         initButtons();
     }
 
+    public int getLives() {
+        return lives;
+    }
     private void initButtons() {
         bMenu = new CustomButton("Menu", 2, 642, 100, 30);
         bPause = new CustomButton("Pause", 2, 675, 100, 30);

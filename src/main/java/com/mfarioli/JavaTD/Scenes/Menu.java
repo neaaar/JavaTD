@@ -20,15 +20,12 @@ public class Menu extends SuperScene implements SceneInterface {
 
     private BufferedImage atlas, background;
 
-    private Random rnd;
-
     private CustomButton bPlaying, bSettings, bQuit;
 
     public Menu(Game game) {
         super(game);
         loadAtlas();
         loadSprites();
-        this.rnd = new Random();
         initButtons();
     }
 
@@ -65,10 +62,6 @@ public class Menu extends SuperScene implements SceneInterface {
         bPlaying = new CustomButton("Play", x, y, w, h);
         bSettings = new CustomButton("Settings", x, y + yOffset, w, h);
         bQuit = new CustomButton("Quit", x, y + yOffset * 2, w, h);
-    }
-
-    private int getRndInt(int bound) {
-        return rnd.nextInt(bound);
     }
 
     @Override

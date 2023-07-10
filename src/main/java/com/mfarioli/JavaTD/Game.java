@@ -113,11 +113,7 @@ public class Game extends JFrame implements Runnable {
                 break;
             }
 
-            case SETTINGS -> {
-                break;
-            }
-
-            case MENU -> {
+            case SETTINGS, MENU, GAME_OVER -> {
                 break;
             }
         }
